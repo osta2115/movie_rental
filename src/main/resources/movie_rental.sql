@@ -79,6 +79,5 @@ CREATE TABLE rents (
     PRIMARY KEY (id)
 );
 
-DROP TABLE clients;
     
     

@@ -3,10 +3,12 @@ package tables;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Entity;
+
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.Objects;
+
 
 
 @Getter
