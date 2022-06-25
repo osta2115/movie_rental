@@ -60,6 +60,7 @@ CREATE TABLE clients (
     phone_number VARCHAR (9) NOT NULL,
     email VARCHAR (64) NOT NULL,
     postal_code VARCHAR (6) NOT NULL,
+    address VARCHAR (64) NOT NULL,
     login VARCHAR (64) UNIQUE NOT NULL,
     admin INT,
     password VARCHAR (64) NOT NULL,
@@ -77,6 +78,7 @@ CREATE TABLE rents (
     FOREIGN KEY (client_id) REFERENCES clients(id),
     PRIMARY KEY (id)
 );
-    
+
+DROP TABLE clients;
     
     

@@ -6,9 +6,11 @@
         <class>tables.Branch</class>
         <class>tables.Carrier</class>
         <class>tables.Category</class>
+        <class>tables.Client</class>
         <class>tables.Director</class>
         <class>tables.PegiCategory</class>
         <class>tables.Product</class>
+        <class>tables.Rent</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
