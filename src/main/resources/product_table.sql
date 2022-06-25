@@ -1,4 +1,5 @@
 USE movie_rental;
+-- USE movie_rental_dev;
 
 CREATE TABLE categories (
     id       INT AUTO_INCREMENT,
