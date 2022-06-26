@@ -12,6 +12,8 @@ import javax.persistence.*;
 @EqualsAndHashCode
 @Builder
 @AllArgsConstructor
+@RequiredArgsConstructor
+@ToString
 public class Branch {
 
     @Id

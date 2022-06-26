@@ -18,38 +18,10 @@ public class MovieRentalMain {
     public static void main(String[] args) {
         entityManagerFactory = Persistence.createEntityManagerFactory("mysql-movie-rental");
         entityManager = entityManagerFactory.createEntityManager();
-        var product1 = buildProductWithName("Taki se film 2");
-        var product = buildProductWithName("Testowy film 3");
         productRepositoryHibernate = new ProductRepositoryHibernate(entityManager);
-        try {
-            productRepositoryHibernate.createProduct(product);
-            productRepositoryHibernate.createProduct(product1);
-        } catch (java.sql.SQLException throwables) {
-            throwables.printStackTrace();
-        }
+
 
         entityManager.close();
         entityManagerFactory.close();
-    }
-
-    static Product buildProductWithName(String name) {
-        Branch branch = Branch.builder().name("Gdańsk").postalCode("80-520").build();
-        Carrier carrier = Carrier.builder().description("Kaseta").build();
-        Category category = Category.builder().title("Horror").build();
-        PegiCategory pegiCategory = PegiCategory.builder().title("18+").build();
-        Director director = Director.builder()
-                .firstName("Jan")
-                .lastName("Kowalski")
-                .build();
-
-        return Product.builder()
-                .branch(branch)
-                .carrier(carrier)
-                .category(category)
-                .director(director)
-                .pegiCategory(pegiCategory)
-                .title(name)
-                .releaseDate(LocalDate.of(1930,3,27))
-                .build();
     }
 }

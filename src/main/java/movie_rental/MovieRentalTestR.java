@@ -8,7 +8,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.time.LocalDate;
 
-public class MovieRentalTest {
+public class MovieRentalTestR {
 
     private static EntityManagerFactory entityManagerFactory;
     private static EntityManager entityManager;
@@ -18,18 +18,33 @@ public class MovieRentalTest {
     public static void main(String[] args) {
         entityManagerFactory = Persistence.createEntityManagerFactory("mysql-movie-rental-dev");
         entityManager = entityManagerFactory.createEntityManager();
-        var product1 = buildProductWithName("Taki se film 2");
-        var product2 = buildProductWithName("Testowy film 3");
         productRepositoryHibernate = new ProductRepositoryHibernate(entityManager);
-        try {
-            productRepositoryHibernate.createProduct(product1);
-//            productRepositoryHibernate.createProduct(product2);
-        } catch (java.sql.SQLException throwables) {
-            throwables.printStackTrace();
-        }
+
+//        addProductTest();
+//        productRepositoryHibernate.getProductById(1).ifPresent(System.out::println);
+
+        Branch branch1 = Branch.builder().name("Gdzies").postalCode("90-190").adres("ulica1").build();
+        Branch branch2 = Branch.builder().name("Gdzies 2").postalCode("90-190").adres("ulica3").build();
+
+        productRepositoryHibernate.addBranch(branch1);
+        productRepositoryHibernate.addBranch(branch2);
+        productRepositoryHibernate.removeBranch(branch1);
+        productRepositoryHibernate.removeBranch(branch1);
+
+
 
         entityManager.close();
         entityManagerFactory.close();
+    }
+
+    private static void addProductTest() {
+        var product1 = buildProductWithName("Taki se film 2");
+        try {
+            productRepositoryHibernate.createProduct(product1);
+//            productRepositoryHibernate.createProduct(product2);
+        } catch (java.sql.SQLException throwable) {
+            throwable.printStackTrace();
+        }
     }
 
     static Product buildProductWithName(String name) {

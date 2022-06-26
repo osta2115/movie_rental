@@ -9,8 +9,8 @@ import java.util.Optional;
 public interface ProductsRepository {
 
     void createProduct(Product product) throws SQLException;
-    boolean deleteProductById(Integer id);
-    Optional<Product> getProductBy(Integer id);
+    void deleteProductById(Integer id) throws SQLException;
+    Optional<Product> getProductById(Integer id);
     Product getProductName(String name);
     List<Product> getAllProducts();
 
@@ -27,7 +27,7 @@ public interface ProductsRepository {
     boolean removeDirector(Director director);
 
     boolean addBranch(Branch branch);
-    boolean removeBranch(Branch branch);
+    void removeBranch(Branch branch);
 
 
 }

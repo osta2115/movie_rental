@@ -1,8 +1,6 @@
 package tables;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -11,7 +9,9 @@ import java.time.LocalDate;
 @Table(name = "products")
 @EqualsAndHashCode
 @AllArgsConstructor
+@RequiredArgsConstructor
 @Builder
+@ToString
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
