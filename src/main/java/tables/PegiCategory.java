@@ -12,7 +12,9 @@ import javax.persistence.*;
 @Setter
 @EqualsAndHashCode
 public class PegiCategory {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
     @Column(length = 64)

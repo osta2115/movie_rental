@@ -3,11 +3,9 @@ package tables;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.Entity;
-
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 
 
 
@@ -31,10 +29,10 @@ public class Rent {
     private Client client;
 
     @Column(name = "rentDate")
-    private Date rentDate;
+    private LocalDate rentDate;
 
     @Column(name = "returnDate")
-    private Date returnDate;
+    private LocalDate returnDate;
 
 }
 
