@@ -1,5 +1,6 @@
 package tables;
 
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,9 +12,11 @@ import javax.persistence.*;
 @Getter
 @Setter
 @EqualsAndHashCode
+@Builder
 public class Director {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.TABLE)
     private Integer id;
 
     @Column(name = "first_name", length = 64)

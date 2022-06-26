@@ -3,7 +3,6 @@ package tables;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.Entity;
 
 import javax.persistence.*;
 
@@ -16,6 +15,7 @@ import javax.persistence.*;
 public class Client {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
     @Column(name = "first_name", length = 32)

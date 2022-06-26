@@ -18,13 +18,20 @@
             <property name="javax.persistence.jdbc.user" value="SDAproject"/>
             <property name="javax.persistence.jdbc.password" value="SDAproject"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect"/>
-            <property name="hibernate.hbm2ddl.auto" value="validate"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
             <property name="hibernate.show_sql" value="true"/>
             <property name='hibernate.format_sql' value='true'/>
         </properties>
     </persistence-unit>
     <persistence-unit name="mysql-movie-rental-dev" transaction-type="RESOURCE_LOCAL">
-<!--        <class>library.common.Department</class>-->
+        <class>tables.Branch</class>
+        <class>tables.Carrier</class>
+        <class>tables.Category</class>
+        <class>tables.Client</class>
+        <class>tables.Director</class>
+        <class>tables.PegiCategory</class>
+        <class>tables.Product</class>
+        <class>tables.Rent</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
@@ -32,8 +39,8 @@
             <property name="javax.persistence.jdbc.user" value="SDAproject"/>
             <property name="javax.persistence.jdbc.password" value="SDAproject"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect"/>
-            <property name="hibernate.hbm2ddl.auto" value="validate"/>
-            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <property name="hibernate.show_sql" value="false"/>
             <property name='hibernate.format_sql' value='true'/>
         </properties>
     </persistence-unit>
