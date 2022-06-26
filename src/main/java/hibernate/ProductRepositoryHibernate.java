@@ -99,6 +99,24 @@ public class ProductRepositoryHibernate implements ProductsRepository {
     }
 
     @Override
+    public Optional<Category> findCategory(Category category) {
+        try {
+            var selectSql = """
+                    SELECT c FROM Category c
+                    WHERE c.title = :title
+                    """;
+            var query = entityManager.createQuery(selectSql, Category.class);
+            query.setParameter("firstName", category.getTitle());
+            log.info("Category {} found ", category.getTitle());
+            return Optional.ofNullable(query.getSingleResult());
+        } catch (NoResultException e) {
+            log.info("No Director named {}", category.getTitle());
+            return Optional.empty();
+        }
+    }
+
+
+    @Override
     public void addDirector(Director director) {
         try {
             var selectSql = """
@@ -146,15 +164,20 @@ public class ProductRepositoryHibernate implements ProductsRepository {
 
     @Override
     public Optional<Director> findDirector(Director director){
-        var selectSql = """
+        try {
+            var selectSql = """
                     SELECT d FROM Director d
                     WHERE d.firstName = :firstName
                     AND d.lastName = :lastName
                     """;
-        var query = entityManager.createQuery(selectSql, Director.class);
-        query.setParameter("firstName", director.getFirstName());
-        query.setParameter("lastName", director.getLastName());
-        return Optional.ofNullable(query.getSingleResult());
+            var query = entityManager.createQuery(selectSql, Director.class);
+            query.setParameter("firstName", director.getFirstName());
+            query.setParameter("lastName", director.getLastName());
+            return Optional.ofNullable(query.getSingleResult());
+        } catch (NoResultException e) {
+            log.info("No Director named {}", director.getLastName());
+            return Optional.empty();
+        }
     }
 
     @Override

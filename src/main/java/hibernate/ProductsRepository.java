@@ -22,6 +22,7 @@ public interface ProductsRepository {
 
     boolean addCategory(Category category);
     boolean removeCategory(Category category);
+    public Optional<Category> findCategory(Category category);
 
     void addDirector(Director director);
     void removeDirector(Director director);
