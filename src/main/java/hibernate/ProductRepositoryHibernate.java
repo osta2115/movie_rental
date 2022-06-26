@@ -79,6 +79,66 @@ public class ProductRepositoryHibernate implements ProductsRepository {
     }
 
     @Override
+    public void addCarrier(Carrier carrier) {
+        try {
+            var selectSql = """
+                    SELECT c FROM Carrier c
+                    WHERE c.description = :description
+                    """;
+            var query = entityManager.createQuery(selectSql, Carrier.class);
+            query.setParameter("description", carrier.getDescription());
+            var existnigCarrier = Optional.ofNullable(query.getSingleResult());
+            if (existnigCarrier.isPresent()) {
+                log.warn("Carrier with given name already exists: {}", carrier.getDescription());
+            }
+        } catch (NoResultException e) {
+            entityManager.getTransaction().begin();
+            entityManager.persist(carrier);
+            entityManager.getTransaction().commit();
+            log.info("Carrier type added: {}", carrier.getDescription());
+        }
+    }
+
+    @Override
+    public void removeCarrier(Carrier carrier) {
+        try {
+            var selectSql = """
+                    SELECT c FROM Carrier c
+                    WHERE c.description = :description
+                    """;
+            var query = entityManager.createQuery(selectSql, Carrier.class);
+            query.setParameter("description", carrier.getDescription());
+            var existingCarrier = query.getSingleResult();
+            entityManager.getTransaction().begin();
+            entityManager.remove(existingCarrier);
+            entityManager.getTransaction().commit();
+            log.info("Carrier type: {},deleted", carrier.getDescription());
+        } catch (NoResultException e) {
+            log.warn("Cannot delete non-existing carrier type {}", carrier.getDescription());
+        }
+    }
+
+    @Override
+    public Optional<Carrier> getCarrier(Carrier carrier) {
+        try {
+            var selectSql = """
+                     SELECT c FROM Carrier c
+                    WHERE c.description = :description
+                    """;
+            var query = entityManager.createQuery(selectSql, Carrier.class);
+            query.setParameter("description", carrier.getDescription());
+            Optional<Carrier> singleResult = Optional.ofNullable(query.getSingleResult());
+            if (singleResult.isPresent()) {
+                log.info("Carrier type {} found ", carrier.getDescription());
+            }
+            return singleResult;
+        } catch (NoResultException e) {
+            log.info("No CarrierType: {}", carrier.getDescription());
+            return Optional.empty();
+        }
+    }
+
+    @Override
     public void addPegiCategory(PegiCategory pegiCategory) {
         try {
             var selectSql = """
@@ -119,7 +179,7 @@ public class ProductRepositoryHibernate implements ProductsRepository {
     }
 
     @Override
-    public Optional<PegiCategory> findPegiCategory(PegiCategory pegiCategory) {
+    public Optional<PegiCategory> getPegiCategory(PegiCategory pegiCategory) {
         try {
             var selectSql = """
                     SELECT pc FROM PegiCategory pc
@@ -178,7 +238,7 @@ public class ProductRepositoryHibernate implements ProductsRepository {
     }
 
     @Override
-    public Optional<Category> findCategory(Category category) {
+    public Optional<Category> getCategory(Category category) {
         try {
             var selectSql = """
                     SELECT c FROM Category c
@@ -241,7 +301,7 @@ public class ProductRepositoryHibernate implements ProductsRepository {
     }
 
     @Override
-    public Optional<Director> findDirector(Director director) {
+    public Optional<Director> getDirector(Director director) {
         try {
             var selectSql = """
                     SELECT d FROM Director d
@@ -304,7 +364,7 @@ public class ProductRepositoryHibernate implements ProductsRepository {
     }
 
     @Override
-    public Optional<Branch> findBranch(Branch branch) {
+    public Optional<Branch> getBranch(Branch branch) {
         String postalCode = branch.getPostalCode();
         var selectSql = """
                 SELECT b FROM Branch b

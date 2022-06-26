@@ -17,21 +17,25 @@ public interface ProductsRepository {
     boolean changeProductCategory(Integer id, Category category);
     boolean changeProductBranch(Integer id, Branch branch);
 
+    void addCarrier(Carrier carrier);
+    void removeCarrier(Carrier carrier);
+    Optional<Carrier> getCarrier(Carrier carrier);
+
     void addPegiCategory(PegiCategory pegiCategory);
     void removePegiCategory(PegiCategory pegiCategory);
-    public Optional<PegiCategory> findPegiCategory(PegiCategory pegiCategory);
+    Optional<PegiCategory> getPegiCategory(PegiCategory pegiCategory);
 
     void addCategory(Category category);
     void removeCategory(Category category);
-    public Optional<Category> findCategory(Category category);
+    Optional<Category> getCategory(Category category);
 
     void addDirector(Director director);
     void removeDirector(Director director);
-    Optional<Director> findDirector(Director director);
+    Optional<Director> getDirector(Director director);
 
     void addBranch(Branch branch);
     void removeBranch(Branch branch);
-    Optional<Branch> findBranch(Branch branch);
+    Optional<Branch> getBranch(Branch branch);
 
 
 }

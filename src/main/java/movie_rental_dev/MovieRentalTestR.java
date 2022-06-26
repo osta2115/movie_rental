@@ -27,6 +27,28 @@ public class MovieRentalTestR {
 //        categoryTest();
 //        pegiCategoriesTest();
 
+        Carrier carrier1 = Carrier.builder().description("płyta").build();
+        Carrier carrier2 = Carrier.builder().description("taśma").build();
+        Carrier carrier3 = Carrier.builder().description("kaseta").build();
+
+        System.out.println(productRepositoryHibernate.getCarrier(carrier1).isPresent());
+        System.out.println(productRepositoryHibernate.getCarrier(carrier2).isPresent());
+        System.out.println(productRepositoryHibernate.getCarrier(carrier3).isPresent());
+
+        productRepositoryHibernate.addCarrier(carrier1);
+        productRepositoryHibernate.addCarrier(carrier2);
+        productRepositoryHibernate.addCarrier(carrier3);
+
+
+        System.out.println(productRepositoryHibernate.getCarrier(carrier1).isPresent());
+        System.out.println(productRepositoryHibernate.getCarrier(carrier2).isPresent());
+        System.out.println(productRepositoryHibernate.getCarrier(carrier3).isPresent());
+
+        productRepositoryHibernate.removeCarrier(carrier2);
+
+        System.out.println(productRepositoryHibernate.getCarrier(carrier1).isPresent());
+        System.out.println(productRepositoryHibernate.getCarrier(carrier2).isPresent());
+        System.out.println(productRepositoryHibernate.getCarrier(carrier3).isPresent());
     }
 
     private static void pegiCategoriesTest() {
@@ -35,23 +57,23 @@ public class MovieRentalTestR {
         PegiCategory pegi4 = PegiCategory.builder().title("4").build();
 
         System.out.println("--------------------------");
-        productRepositoryHibernate.findPegiCategory(pegi4);
-        productRepositoryHibernate.findPegiCategory(pegi14);
-        productRepositoryHibernate.findPegiCategory(pegi18);
+        productRepositoryHibernate.getPegiCategory(pegi4);
+        productRepositoryHibernate.getPegiCategory(pegi14);
+        productRepositoryHibernate.getPegiCategory(pegi18);
         System.out.println("--------------------------");
         productRepositoryHibernate.addPegiCategory(pegi4);
         productRepositoryHibernate.addPegiCategory(pegi14);
         productRepositoryHibernate.addPegiCategory(pegi18);
         System.out.println("--------------------------");
-        productRepositoryHibernate.findPegiCategory(pegi4);
-        productRepositoryHibernate.findPegiCategory(pegi14);
-        productRepositoryHibernate.findPegiCategory(pegi18);
+        productRepositoryHibernate.getPegiCategory(pegi4);
+        productRepositoryHibernate.getPegiCategory(pegi14);
+        productRepositoryHibernate.getPegiCategory(pegi18);
         System.out.println("--------------------------");
         productRepositoryHibernate.removePegiCategory(pegi4);
         System.out.println("--------------------------");
-        productRepositoryHibernate.findPegiCategory(pegi4);
-        productRepositoryHibernate.findPegiCategory(pegi14);
-        productRepositoryHibernate.findPegiCategory(pegi18);
+        productRepositoryHibernate.getPegiCategory(pegi4);
+        productRepositoryHibernate.getPegiCategory(pegi14);
+        productRepositoryHibernate.getPegiCategory(pegi18);
         entityManager.close();
         entityManagerFactory.close();
     }
@@ -62,10 +84,10 @@ public class MovieRentalTestR {
         productRepositoryHibernate.addCategory(category1);
         productRepositoryHibernate.addCategory(category1);
         productRepositoryHibernate.addCategory(category2);
-        productRepositoryHibernate.findCategory(category1);
-        productRepositoryHibernate.findCategory(category2);
+        productRepositoryHibernate.getCategory(category1);
+        productRepositoryHibernate.getCategory(category2);
         productRepositoryHibernate.removeCategory(category2);
-        productRepositoryHibernate.findCategory(category2);
+        productRepositoryHibernate.getCategory(category2);
     }
 
     private static void directorTest() {
@@ -73,11 +95,11 @@ public class MovieRentalTestR {
         Director director2 = Director.builder().firstName("Jan").lastName("Jakiś").build();
         productRepositoryHibernate.addDirector(director1);
         productRepositoryHibernate.addDirector(director2);
-        productRepositoryHibernate.findDirector(director1);
-        productRepositoryHibernate.findDirector(director2);
+        productRepositoryHibernate.getDirector(director1);
+        productRepositoryHibernate.getDirector(director2);
         productRepositoryHibernate.removeDirector(director2);
-        productRepositoryHibernate.findDirector(director1);
-        productRepositoryHibernate.findDirector(director2);
+        productRepositoryHibernate.getDirector(director1);
+        productRepositoryHibernate.getDirector(director2);
     }
 
     private static void branchTest() {
@@ -86,7 +108,7 @@ public class MovieRentalTestR {
 
         productRepositoryHibernate.addBranch(branch1);
         productRepositoryHibernate.addBranch(branch2);
-        System.out.println(productRepositoryHibernate.findBranch(branch1));
+        System.out.println(productRepositoryHibernate.getBranch(branch1));
         productRepositoryHibernate.removeBranch(branch1);
         productRepositoryHibernate.removeBranch(branch1);
     }
