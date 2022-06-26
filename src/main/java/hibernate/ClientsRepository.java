@@ -3,8 +3,11 @@ package hibernate;
 import tables.Client;
 
 import java.sql.SQLException;
+import java.util.Optional;
 
 public interface ClientsRepository {
+
+    Optional<ClientBasicInfo> getClientBasicInfoById(int id) throws SQLException;
 
     void createClient(Client client) throws SQLException;
 
@@ -24,7 +27,7 @@ public interface ClientsRepository {
 
     void changeClientPassword (Integer id, String password) throws SQLException;
 
-    boolean giveAdmin(Integer id) throws SQLException;
+    void giveAdmin(Integer id) throws SQLException;
 
     Client authorization(String login, String password) throws SQLException;
 }

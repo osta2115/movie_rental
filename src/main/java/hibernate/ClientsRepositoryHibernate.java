@@ -6,14 +6,33 @@ import tables.Client;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
-import javax.persistence.TypedQuery;
 import java.sql.SQLException;
+import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
 public class ClientsRepositoryHibernate implements ClientsRepository{
 
     private final EntityManager entityManager;
+
+    @Override
+    public Optional<ClientBasicInfo> getClientBasicInfoById(int id) throws SQLException {
+        String selectClientBasicInfoById = """
+                select new hibernate.ClientBasicInfo(c.id, c.login, c.firstName, c.lastName)
+                from Client c
+                where c.id = :id
+                """;
+        var query = entityManager.createQuery(selectClientBasicInfoById, ClientBasicInfo.class);
+        query.setParameter("id", id);
+
+        try {
+            var clientBasicInfo = query.getSingleResult();
+            return Optional.of(clientBasicInfo);
+        } catch (NoResultException e) {
+            log.warn("Could not find Client by provided id: {}", id);
+            return Optional.empty();
+        }
+    }
 
     @Override
     public void createClient(Client client) throws SQLException {
@@ -27,7 +46,7 @@ public class ClientsRepositoryHibernate implements ClientsRepository{
         try {
             entityManager.getTransaction().begin();
             String selectClientToRemove = "select c from Client c where c.id = :id";
-            TypedQuery query = entityManager.createQuery(selectClientToRemove, Client.class);
+            var query = entityManager.createQuery(selectClientToRemove, Client.class);
             query.setParameter("id", id);
             Client client = (Client) query.getSingleResult();
             entityManager.remove(client);
@@ -42,7 +61,7 @@ public class ClientsRepositoryHibernate implements ClientsRepository{
         try {
             entityManager.getTransaction().begin();
             String selectClientToChangeFirstName = "select c from Client c where c.id = :id";
-            TypedQuery query = entityManager.createQuery(selectClientToChangeFirstName, Client.class);
+            var query = entityManager.createQuery(selectClientToChangeFirstName, Client.class);
             query.setParameter("id", id);
             Client client = (Client) query.getSingleResult();
             client.setFirstName(newName);
@@ -57,7 +76,7 @@ public class ClientsRepositoryHibernate implements ClientsRepository{
         try {
             entityManager.getTransaction().begin();
             String selectClientToChangeFirstName = "select c from Client c where c.id = :id";
-            TypedQuery query = entityManager.createQuery(selectClientToChangeFirstName, Client.class);
+            var query = entityManager.createQuery(selectClientToChangeFirstName, Client.class);
             query.setParameter("id", id);
             Client client = (Client) query.getSingleResult();
             client.setLastName(newLastName);
@@ -72,7 +91,7 @@ public class ClientsRepositoryHibernate implements ClientsRepository{
         try {
             entityManager.getTransaction().begin();
             String selectClientToChangeFirstName = "select c from Client c where c.id = :id";
-            TypedQuery query = entityManager.createQuery(selectClientToChangeFirstName, Client.class);
+            var query = entityManager.createQuery(selectClientToChangeFirstName, Client.class);
             query.setParameter("id", id);
             Client client = (Client) query.getSingleResult();
             client.setPhoneNumber(newPhoneNumber);
@@ -87,7 +106,7 @@ public class ClientsRepositoryHibernate implements ClientsRepository{
         try {
             entityManager.getTransaction().begin();
             String selectClientToChangeFirstName = "select c from Client c where c.id = :id";
-            TypedQuery query = entityManager.createQuery(selectClientToChangeFirstName, Client.class);
+            var query = entityManager.createQuery(selectClientToChangeFirstName, Client.class);
             query.setParameter("id", id);
             Client client = (Client) query.getSingleResult();
             client.setEmail(newEmail);
@@ -102,7 +121,7 @@ public class ClientsRepositoryHibernate implements ClientsRepository{
         try {
             entityManager.getTransaction().begin();
             String selectClientToChangeFirstName = "select c from Client c where c.id = :id";
-            TypedQuery query = entityManager.createQuery(selectClientToChangeFirstName, Client.class);
+            var query = entityManager.createQuery(selectClientToChangeFirstName, Client.class);
             query.setParameter("id", id);
             Client client = (Client) query.getSingleResult();
             client.setPostalCode(newPostalCode);
@@ -117,7 +136,7 @@ public class ClientsRepositoryHibernate implements ClientsRepository{
         try {
             entityManager.getTransaction().begin();
             String selectClientToChangeFirstName = "select c from Client c where c.id = :id";
-            TypedQuery query = entityManager.createQuery(selectClientToChangeFirstName, Client.class);
+            var query = entityManager.createQuery(selectClientToChangeFirstName, Client.class);
             query.setParameter("id", id);
             Client client = (Client) query.getSingleResult();
             client.setAddress(newAddress);
@@ -132,7 +151,7 @@ public class ClientsRepositoryHibernate implements ClientsRepository{
         try {
             entityManager.getTransaction().begin();
             String selectClientToChangeFirstName = "select c from Client c where c.id = :id";
-            TypedQuery query = entityManager.createQuery(selectClientToChangeFirstName, Client.class);
+            var query = entityManager.createQuery(selectClientToChangeFirstName, Client.class);
             query.setParameter("id", id);
             Client client = (Client) query.getSingleResult();
             client.setPassword(newPassword);
@@ -143,12 +162,35 @@ public class ClientsRepositoryHibernate implements ClientsRepository{
     }
 
     @Override
-    public boolean giveAdmin(Integer id) throws SQLException {
-        return false;
+    public void giveAdmin(Integer id) throws SQLException {
+        entityManager.getTransaction().begin();
+        String selectUserToGiveAdmin = "select c from Client c where c.id = :id";
+        var query = entityManager.createQuery(selectUserToGiveAdmin, Client.class);
+        query.setParameter("id", id);
+        Client client = query.getSingleResult();
+        if (client.getAdmin() == 0) {
+            client.setAdmin(1);
+        } else {
+            log.warn("User with id: {} is already an admin", id);
+        }
+        entityManager.getTransaction().commit();
     }
 
     @Override
     public Client authorization(String login, String password) throws SQLException {
+
+        entityManager.getTransaction().begin();
+        String selectUserByLogin = "select c from Client c where c.login = :login";
+        var query = entityManager.createQuery(selectUserByLogin, Client.class);
+        query.setParameter("login", login);
+        Client client = query.getSingleResult();
+        if (client.getPassword().equals(password)){
+            log.info("User {} logged in", login);
+            return client;
+        } else {
+            log.warn("Wrong login or password");
+        }
+        entityManager.getTransaction().commit();
         return null;
     }
 }
