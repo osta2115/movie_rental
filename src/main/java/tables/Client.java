@@ -3,9 +3,10 @@ package tables;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.Entity;
+
 
 import javax.persistence.*;
+import java.util.List;
 
 
 @Getter
@@ -45,7 +46,8 @@ public class Client {
     @Column(name = "password", length = 64)
     private String password;
 
-    //private List<Rent> rents;
+//    @ManyToMany(mappedBy = "clients")
+//    private List<Rent> rents;
 
     boolean isPhoneNumberCorrect(String phoneNumber) {
         return phoneNumber.matches("[0-9]{9}");
