@@ -35,6 +35,7 @@ public class ProductRepositoryHibernate implements ProductsRepository {
             var product = query.getSingleResult();
             entityManager.remove(product);
             entityManager.getTransaction().commit();
+
         } catch (NoResultException e) {
             log.warn("Cannot delete non-existing product. product id: {}", id);
         }
@@ -108,7 +109,7 @@ public class ProductRepositoryHibernate implements ProductsRepository {
     }
 
     @Override
-    public boolean addBranch(Branch branch) {
+    public void addBranch(Branch branch) {
         String postalCode = branch.getPostalCode();
         try {
             var selectSql = """
@@ -117,18 +118,15 @@ public class ProductRepositoryHibernate implements ProductsRepository {
                     """;
             var query = entityManager.createQuery(selectSql, Branch.class);
             query.setParameter("postalCode", postalCode);
-            var existingBranch = query.getSingleResult();
-            if (existingBranch == null){
-                entityManager.getTransaction().begin();
-                entityManager.persist(branch);
-                entityManager.getTransaction().commit();
-                log.info("Branch added: {}", branch);
-            }else log.warn("Branch with given postal code already exists: {}", postalCode);;
+            Optional<Branch> existingBranch = Optional.ofNullable(query.getSingleResult());
+            log.warn("Branch with given postal code already exists: {}", postalCode);
 
         } catch (NoResultException e) {
-            e.printStackTrace();
+            entityManager.getTransaction().begin();
+            entityManager.persist(branch);
+            entityManager.getTransaction().commit();
+            log.info("Branch added: {}", branch);
         }
-        return false;
     }
 
     @Override
@@ -145,11 +143,25 @@ public class ProductRepositoryHibernate implements ProductsRepository {
             entityManager.getTransaction().begin();
             entityManager.remove(existingBranch);
             entityManager.getTransaction().commit();
+            log.info("Branch {}, {} deleted", branch.getName(), branch.getPostalCode());
         } catch (NoResultException e) {
             log.warn("Cannot delete non-existing Branch {}, {}, {}",
                     branch.getName(),
                     branch.getPostalCode(),
                     branch.getAdres());
         }
+    }
+
+    @Override
+    public Optional<Branch> findBranch(Branch branch) {
+        String postalCode = branch.getPostalCode();
+        var selectSql = """
+                    SELECT b FROM Branch b
+                    WHERE b.postalCode =  :postalCode
+                    """;
+        var query = entityManager.createQuery(selectSql, Branch.class);
+        query.setParameter("postalCode", postalCode);
+        var existingBranch = query.getSingleResult();
+        return Optional.of(existingBranch);
     }
 }

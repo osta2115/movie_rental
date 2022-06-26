@@ -28,6 +28,7 @@ public class MovieRentalTestR {
 
         productRepositoryHibernate.addBranch(branch1);
         productRepositoryHibernate.addBranch(branch2);
+        System.out.println(productRepositoryHibernate.findBranch(branch1));
         productRepositoryHibernate.removeBranch(branch1);
         productRepositoryHibernate.removeBranch(branch1);
 

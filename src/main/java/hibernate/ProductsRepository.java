@@ -26,8 +26,9 @@ public interface ProductsRepository {
     boolean addDirector(Director director);
     boolean removeDirector(Director director);
 
-    boolean addBranch(Branch branch);
+    void addBranch(Branch branch);
     void removeBranch(Branch branch);
+    Optional<Branch> findBranch(Branch branch);
 
 
 }
