@@ -13,6 +13,10 @@ import javax.persistence.*;
 @Builder
 public class Category {
 
+    public Category (){
+
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;

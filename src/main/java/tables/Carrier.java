@@ -1,9 +1,6 @@
 package tables;
 
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -12,9 +9,13 @@ import javax.persistence.*;
 @Getter
 @Setter
 @EqualsAndHashCode
+@AllArgsConstructor
 @Builder
 public class Carrier {
 
+    public Carrier (){
+
+    }
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;

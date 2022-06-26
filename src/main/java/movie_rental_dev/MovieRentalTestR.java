@@ -1,4 +1,4 @@
-package movie_rental;
+package movie_rental_dev;
 
 import hibernate.ProductRepositoryHibernate;
 import tables.*;
@@ -23,12 +23,24 @@ public class MovieRentalTestR {
 //        addProductTest();
 //        productRepositoryHibernate.getProductById(1).ifPresent(System.out::println);
 //        branchTest();
+//        directorTest();
 
-        directorTest();
-
+        categoryTest();
 
         entityManager.close();
         entityManagerFactory.close();
+    }
+
+    private static void categoryTest() {
+        Category category1 = Category.builder().title("Dramat").build();
+        Category category2 = Category.builder().title("Komedia").build();
+        productRepositoryHibernate.addCategory(category1);
+        productRepositoryHibernate.addCategory(category1);
+        productRepositoryHibernate.addCategory(category2);
+        productRepositoryHibernate.findCategory(category1);
+        productRepositoryHibernate.findCategory(category2);
+        productRepositoryHibernate.removeCategory(category2);
+        productRepositoryHibernate.findCategory(category2);
     }
 
     private static void directorTest() {

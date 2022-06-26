@@ -12,9 +12,12 @@ import javax.persistence.*;
 @EqualsAndHashCode
 @Builder
 @AllArgsConstructor
-@RequiredArgsConstructor
 @ToString
 public class Branch {
+
+    public Branch() {
+
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -1,9 +1,6 @@
 package tables;
 
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -11,9 +8,12 @@ import javax.persistence.*;
 @Table(name = "directors")
 @Getter
 @Setter
-@EqualsAndHashCode
+@AllArgsConstructor
 @Builder
 public class Director {
+
+    public Director() {
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
