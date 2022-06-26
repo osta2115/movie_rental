@@ -14,7 +14,6 @@ import javax.persistence.*;
 public class Director {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
     @Column(name = "first_name", length = 64)

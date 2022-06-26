@@ -15,7 +15,6 @@ import javax.persistence.*;
 public class Branch {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
     @Column(length = 64)
