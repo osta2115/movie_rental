@@ -61,7 +61,7 @@ public class ProductRepositoryHibernate implements ProductsRepository {
     public List<Product> getAllProducts() {
         var selectAllProducts = """
                 SELECT NEW tables.Product (p.id, p.title)
-                
+                                
                 FROM Product p
                 """;
         var query = entityManager.createQuery(selectAllProducts, Product.class);
@@ -89,13 +89,42 @@ public class ProductRepositoryHibernate implements ProductsRepository {
     }
 
     @Override
-    public boolean addCategory(Category category) {
-        return false;
+    public void addCategory(Category category) {
+        try {
+            var selectSql = """
+                    SELECT c FROM Category c
+                    WHERE c.title = :title
+                    """;
+            var query = entityManager.createQuery(selectSql, Category.class);
+            query.setParameter("title", category.getTitle());
+            var existingCategory = query.getSingleResult();
+            log.warn("Category with given name already exists: {}",category.getTitle());
+
+        } catch (NoResultException e) {
+            entityManager.getTransaction().begin();
+            entityManager.persist(category);
+            entityManager.getTransaction().commit();
+            log.info("Category added: {}", category.getTitle());
+        }
     }
 
     @Override
-    public boolean removeCategory(Category category) {
-        return false;
+    public void removeCategory(Category category) {
+        try {
+            var selectSql = """
+                    SELECT c FROM Category c
+                    WHERE c.title = :title
+                    """;
+            var query = entityManager.createQuery(selectSql, Category.class);
+            query.setParameter("title", category.getTitle());
+            var existingCategory = query.getSingleResult();
+            entityManager.getTransaction().begin();
+            entityManager.remove(existingCategory);
+            entityManager.getTransaction().commit();
+            log.info("Category titled: {},deleted", category.getTitle());
+        } catch (NoResultException e) {
+            log.warn("Cannot delete non-existing Category {}", category.getTitle());
+        }
     }
 
     @Override
@@ -106,11 +135,11 @@ public class ProductRepositoryHibernate implements ProductsRepository {
                     WHERE c.title = :title
                     """;
             var query = entityManager.createQuery(selectSql, Category.class);
-            query.setParameter("firstName", category.getTitle());
+            query.setParameter("title", category.getTitle());
             log.info("Category {} found ", category.getTitle());
             return Optional.ofNullable(query.getSingleResult());
         } catch (NoResultException e) {
-            log.info("No Director named {}", category.getTitle());
+            log.info("No Category titled {}", category.getTitle());
             return Optional.empty();
         }
     }
@@ -128,14 +157,14 @@ public class ProductRepositoryHibernate implements ProductsRepository {
             query.setParameter("firstName", director.getFirstName());
             query.setParameter("lastName", director.getLastName());
             var existingDirector = query.getSingleResult();
-            entityManager.getTransaction().begin();
-            entityManager.remove(existingDirector);
-            entityManager.getTransaction().commit();
-            log.info("Director with id: {}, {}, {} deleted",
-                    director.getId(), director.getLastName(), director.getLastName());
+            log.warn("Director with given name already exists: {} {}"
+                    ,director.getLastName(), director.getLastName());
+
         } catch (NoResultException e) {
-            log.warn("Cannot delete non-existing Director {}, {}, {}",
-                    director.getId(), director.getLastName(), director.getLastName());
+            entityManager.getTransaction().begin();
+            entityManager.persist(director);
+            entityManager.getTransaction().commit();
+            log.info("Director added: {}, {} {}", director.getId(), director.getLastName(), director.getLastName());
         }
     }
 
@@ -163,7 +192,7 @@ public class ProductRepositoryHibernate implements ProductsRepository {
     }
 
     @Override
-    public Optional<Director> findDirector(Director director){
+    public Optional<Director> findDirector(Director director) {
         try {
             var selectSql = """
                     SELECT d FROM Director d
@@ -229,9 +258,9 @@ public class ProductRepositoryHibernate implements ProductsRepository {
     public Optional<Branch> findBranch(Branch branch) {
         String postalCode = branch.getPostalCode();
         var selectSql = """
-                    SELECT b FROM Branch b
-                    WHERE b.postalCode =  :postalCode
-                    """;
+                SELECT b FROM Branch b
+                WHERE b.postalCode =  :postalCode
+                """;
         var query = entityManager.createQuery(selectSql, Branch.class);
         query.setParameter("postalCode", postalCode);
         var existingBranch = query.getSingleResult();

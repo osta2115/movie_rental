@@ -24,6 +24,14 @@ public class MovieRentalTestR {
 //        productRepositoryHibernate.getProductById(1).ifPresent(System.out::println);
 //        branchTest();
 
+        directorTest();
+
+
+        entityManager.close();
+        entityManagerFactory.close();
+    }
+
+    private static void directorTest() {
         Director director1 = Director.builder().firstName("Janina").lastName("Jakaś").build();
         Director director2 = Director.builder().firstName("Jan").lastName("Jakiś").build();
         productRepositoryHibernate.addDirector(director1);
@@ -33,11 +41,6 @@ public class MovieRentalTestR {
         productRepositoryHibernate.removeDirector(director2);
         productRepositoryHibernate.findDirector(director1);
         productRepositoryHibernate.findDirector(director2);
-
-
-
-        entityManager.close();
-        entityManagerFactory.close();
     }
 
     private static void branchTest() {

@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @EqualsAndHashCode
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Builder
 public class Category {
 

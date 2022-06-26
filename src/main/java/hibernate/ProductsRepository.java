@@ -20,8 +20,8 @@ public interface ProductsRepository {
     boolean addPegiCategory(PegiCategory pegiCategory);
     boolean removePegiCategory(PegiCategory pegiCategory);
 
-    boolean addCategory(Category category);
-    boolean removeCategory(Category category);
+    void addCategory(Category category);
+    void removeCategory(Category category);
     public Optional<Category> findCategory(Category category);
 
     void addDirector(Director director);
