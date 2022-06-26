@@ -4,7 +4,9 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+
 import javax.persistence.*;
+import java.util.List;
 
 
 @Getter
@@ -15,7 +17,6 @@ import javax.persistence.*;
 public class Client {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
     @Column(name = "first_name", length = 32)
@@ -40,12 +41,13 @@ public class Client {
     private String login;
 
     @Column(name = "admin")
-    private Integer adminStatus;
+    private Integer admin;
 
     @Column(name = "password", length = 64)
     private String password;
 
-    //private List<Rent> rents;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "client")
+    private List<Rent> rents;
 
     boolean isPhoneNumberCorrect(String phoneNumber) {
         return phoneNumber.matches("[0-9]{9}");

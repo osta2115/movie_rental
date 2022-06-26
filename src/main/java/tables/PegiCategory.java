@@ -14,6 +14,7 @@ import javax.persistence.*;
 @EqualsAndHashCode
 @Builder
 public class PegiCategory {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;

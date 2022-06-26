@@ -44,12 +44,6 @@ CREATE TABLE products (
     release_date DATE NOT NULL,
     branch_id INT NOT NULL,
 
-
-    FOREIGN KEY (category_id) REFERENCES categories(id),
-    FOREIGN KEY (director_id) REFERENCES directors(id),
-    FOREIGN KEY (pegi_category_id) REFERENCES pegi_categories(id),
-    FOREIGN KEY (carrier_id) REFERENCES carriers(id),
-    FOREIGN KEY (branch_id) REFERENCES branches(id),
     PRIMARY KEY (id)
 );
 
@@ -64,6 +58,7 @@ CREATE TABLE clients (
     login VARCHAR (64) UNIQUE NOT NULL,
     admin INT,
     password VARCHAR (64) NOT NULL,
+    
     PRIMARY KEY (id)
 );
 
@@ -74,8 +69,6 @@ CREATE TABLE rents (
     return_date DATE NOT NULL,
     rent_date DATE NOT NULL,
     
-    FOREIGN KEY (product_id) REFERENCES products(id),
-    FOREIGN KEY (client_id) REFERENCES clients(id),
     PRIMARY KEY (id)
 );
 

@@ -4,9 +4,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
-
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 
 
 
@@ -18,7 +17,7 @@ import java.util.Date;
 public class Rent {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
     @ManyToOne
@@ -30,10 +29,10 @@ public class Rent {
     private Client client;
 
     @Column(name = "rentDate")
-    private Date rentDate;
+    private LocalDate rentDate;
 
     @Column(name = "returnDate")
-    private Date returnDate;
+    private LocalDate returnDate;
 
 }
 
