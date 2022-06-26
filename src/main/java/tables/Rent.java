@@ -3,7 +3,6 @@ package tables;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.Entity;
 
 
 import javax.persistence.*;
@@ -19,7 +18,7 @@ import java.util.Date;
 public class Rent {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.TABLE)
     private Integer id;
 
     @ManyToOne

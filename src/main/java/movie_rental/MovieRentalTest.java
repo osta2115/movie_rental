@@ -8,7 +8,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.time.LocalDate;
 
-public class MovieRentalMain {
+public class MovieRentalTest {
 
     private static EntityManagerFactory entityManagerFactory;
     private static EntityManager entityManager;
@@ -16,14 +16,14 @@ public class MovieRentalMain {
 
 
     public static void main(String[] args) {
-        entityManagerFactory = Persistence.createEntityManagerFactory("mysql-movie-rental");
+        entityManagerFactory = Persistence.createEntityManagerFactory("mysql-movie-rental-dev");
         entityManager = entityManagerFactory.createEntityManager();
         var product1 = buildProductWithName("Taki se film 2");
-        var product = buildProductWithName("Testowy film 3");
+        var product2 = buildProductWithName("Testowy film 3");
         productRepositoryHibernate = new ProductRepositoryHibernate(entityManager);
         try {
-            productRepositoryHibernate.createProduct(product);
             productRepositoryHibernate.createProduct(product1);
+//            productRepositoryHibernate.createProduct(product2);
         } catch (java.sql.SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -49,7 +49,8 @@ public class MovieRentalMain {
                 .director(director)
                 .pegiCategory(pegiCategory)
                 .title(name)
-                .releaseDate(LocalDate.of(1930,3,27))
+                .releaseDate(LocalDate.of(1930, 3, 27))
                 .build();
     }
 }
+
