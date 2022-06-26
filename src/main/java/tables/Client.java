@@ -46,7 +46,7 @@ public class Client {
     @Column(name = "password", length = 64)
     private String password;
 
-    @ManyToMany(mappedBy = "clients")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "client")
     private List<Rent> rents;
 
     boolean isPhoneNumberCorrect(String phoneNumber) {

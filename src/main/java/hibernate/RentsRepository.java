@@ -4,7 +4,7 @@ import java.sql.Date;
 
 public interface RentsRepository {
 
-    boolean isProductAvailableNow(Integer bookId, Date date);
+    boolean isProductAvailableNow(Integer bookId);
 
     boolean isProductAvailableAtGivenDate(Integer bookId, Date date);
 

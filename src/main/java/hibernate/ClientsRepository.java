@@ -2,31 +2,29 @@ package hibernate;
 
 import tables.Client;
 
+import java.sql.SQLException;
+
 public interface ClientsRepository {
 
-    boolean createClient(Client client);
+    void createClient(Client client) throws SQLException;
 
-    boolean deleteClientById(Integer id);
+    void deleteClientById(Integer id) throws SQLException;
 
+    void changeClientFirstName(Integer id, String newName) throws SQLException;
 
+    void changeClientLastName(Integer id, String newLastName) throws SQLException;
 
-    boolean changeClientFirstName(Integer id, String newName);
+    void changeClientPhone(Integer id, String newPhone) throws SQLException;
 
-    boolean changeClientLastName(Integer id, String newLastName);
+    void changeClientEmail (Integer id, String newEmail) throws SQLException;
 
-    boolean changeClientPhone(Integer id, String newPhone);
+    void changeClientPostalCode (Integer id, String postalCode) throws SQLException;
 
-    boolean changeClientEmail (Integer id, String newEmail);
+    void changeClientAddress (Integer id, String newAdress) throws SQLException;
 
-    boolean changeClientPostalCode (Integer id, String postalCode);
+    void changeClientPassword (Integer id, String password) throws SQLException;
 
-    boolean changeClientAddress (Integer id, String newAdress);
+    boolean giveAdmin(Integer id) throws SQLException;
 
-    boolean changeClientPassword (Integer id, String password);
-
-    boolean giveAdmin(Integer id);
-
-
-
-    Client authorization(String login, String password);
+    Client authorization(String login, String password) throws SQLException;
 }
