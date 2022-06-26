@@ -3,6 +3,7 @@ package tables;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "directors")
@@ -25,4 +26,7 @@ public class Director {
 
     @Column(name = "last_name", length = 64)
     private String lastName;
+
+    @OneToMany(mappedBy = "director", cascade = CascadeType.ALL, orphanRemoval = false)
+    private Set<Product> products;
 }

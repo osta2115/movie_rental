@@ -16,28 +16,30 @@ public class ProductRepositoryHibernate implements ProductsRepository {
     private final EntityManager entityManager;
 
     @Override
-    public void createProduct(Product product) throws SQLException {
+    public void createProduct(Product product) {
 
         if (getBranch(product.getBranch()).isPresent()) {
             product.setBranch(getBranch(product.getBranch()).get());
-        }
-//        else addBranch(tmpProduct.getBranch());
+        } else addBranch(product.getBranch());
 
         if (getCarrier(product.getCarrier()).isPresent()) {
             product.setCarrier(getCarrier(product.getCarrier()).get());
-        }
-//        else addCarrier(tmpProduct.getCarrier());
+        } else addCarrier(product.getCarrier());
 
         if (getCategory(product.getCategory()).isPresent()) {
             product.setCategory(getCategory(product.getCategory()).get());
-        }
+        } else addCategory(product.getCategory());
 
         if (getDirector(product.getDirector()).isPresent()) {
             product.setDirector(getDirector(product.getDirector()).get());
-        }
+        } else addDirector(product.getDirector());
 
         if (getPegiCategory(product.getPegiCategory()).isPresent()) {
             product.setPegiCategory(getPegiCategory(product.getPegiCategory()).get());
+        } else {
+            addPegiCategory(product.getPegiCategory());
+//            TODO zamienić metody dodające na metody, które zwrócą obiekt dodany,
+//             wykorzystać to, aby dodając produkt dodać od produkt do listy.
         }
 
         entityManager.getTransaction().begin();
@@ -46,19 +48,21 @@ public class ProductRepositoryHibernate implements ProductsRepository {
     }
 
     @Override
-    public void deleteProductById(Integer id) throws SQLException {
+    public void deleteProductById(Integer id) {
         try {
-            entityManager.getTransaction().begin();
+
             var selectProductsById = """
                     SELECT p FROM Product p
                     WHERE p.id =  :id
                     """;
             var query = entityManager.createQuery(selectProductsById, Product.class);
             query.setParameter("id", id);
-            var product = query.getSingleResult();
-            entityManager.remove(product);
-            entityManager.getTransaction().commit();
-
+            var product = Optional.of(query.getSingleResult());
+            if (product.isPresent()) {
+                entityManager.getTransaction().begin();
+                entityManager.remove(product.get());
+                entityManager.getTransaction().commit();
+            }
         } catch (NoResultException e) {
             log.warn("Cannot delete non-existing product. product id: {}", id);
         }

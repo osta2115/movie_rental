@@ -21,6 +21,7 @@ public class MovieRentalTestR {
         entityManager = entityManagerFactory.createEntityManager();
         productRepositoryHibernate = new ProductRepositoryHibernate(entityManager);
 
+        addProductTest();
 //        addProductTest();
 //        productRepositoryHibernate.getProductById(1).ifPresent(System.out::println);
 //        branchTest();
@@ -29,6 +30,8 @@ public class MovieRentalTestR {
 //        pegiCategoriesTest();
 //        carrierTest();
 
+//        productRepositoryHibernate.deleteProductById(5);
+//        productRepositoryHibernate.deleteProductById(43);
         List<Product> allProducts = productRepositoryHibernate.getAllProducts();
         allProducts.forEach(System.out::println);
 
@@ -125,13 +128,10 @@ public class MovieRentalTestR {
         var product1 = buildProductWithName("Poczwara");
 //        var product2 = buildProductWithName("Taki se film 3");
 //        var product3 = buildProductWithName("Taki se film: powrót");
-        try {
-            productRepositoryHibernate.createProduct(product1);
+        productRepositoryHibernate.createProduct(product1);
 //            productRepositoryHibernate.createProduct(product2);
 //            productRepositoryHibernate.createProduct(product3);
-        } catch (java.sql.SQLException throwable) {
-            throwable.printStackTrace();
-        }
+
     }
 
     static Product buildProductWithName(String name) {

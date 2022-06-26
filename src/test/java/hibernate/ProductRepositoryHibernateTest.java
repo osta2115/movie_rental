@@ -53,11 +53,8 @@ class ProductRepositoryHibernateTest {
         //given
         var prodct1 = buildProduct();
         //when
-        try {
             productRepositoryHibernate.createProduct(prodct1);
-        } catch (java.sql.SQLException throwables) {
-            throwables.printStackTrace();
-        }
+
         //then
 //        assertThat(result).isEqualTo(true);
         assertThat(productRepositoryHibernate.getAllProducts().size()).isEqualTo(1);
