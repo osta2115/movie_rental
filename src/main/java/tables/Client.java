@@ -41,13 +41,13 @@ public class Client {
     private String login;
 
     @Column(name = "admin")
-    private Integer adminStatus;
+    private Integer admin;
 
     @Column(name = "password", length = 64)
     private String password;
 
-//    @ManyToMany(mappedBy = "clients")
-//    private List<Rent> rents;
+    @ManyToMany(mappedBy = "clients")
+    private List<Rent> rents;
 
     boolean isPhoneNumberCorrect(String phoneNumber) {
         return phoneNumber.matches("[0-9]{9}");
