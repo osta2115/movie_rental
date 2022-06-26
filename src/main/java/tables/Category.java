@@ -11,6 +11,7 @@ import javax.persistence.*;
 @EqualsAndHashCode
 @AllArgsConstructor
 @Builder
+@ToString
 public class Category {
 
     public Category (){

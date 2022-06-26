@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.time.LocalDate;
+import java.util.List;
 
 public class MovieRentalTestR {
 
@@ -20,7 +21,7 @@ public class MovieRentalTestR {
         entityManager = entityManagerFactory.createEntityManager();
         productRepositoryHibernate = new ProductRepositoryHibernate(entityManager);
 
-        addProductTest();
+//        addProductTest();
 //        productRepositoryHibernate.getProductById(1).ifPresent(System.out::println);
 //        branchTest();
 //        directorTest();
@@ -28,6 +29,8 @@ public class MovieRentalTestR {
 //        pegiCategoriesTest();
 //        carrierTest();
 
+        List<Product> allProducts = productRepositoryHibernate.getAllProducts();
+        allProducts.forEach(System.out::println);
 
     }
 

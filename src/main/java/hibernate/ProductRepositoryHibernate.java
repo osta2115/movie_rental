@@ -82,13 +82,15 @@ public class ProductRepositoryHibernate implements ProductsRepository {
 
     @Override
     public List<Product> getAllProducts() {
+
         var selectAllProducts = """
-                SELECT NEW tables.Product (p.id, p.title)
+                SELECT NEW tables.Product (p.id, p.title, p.category, p.director, p.pegiCategory, p.carrier, p.branch, p.releaseDate)
                                 
                 FROM Product p
                 """;
         var query = entityManager.createQuery(selectAllProducts, Product.class);
         return query.getResultList();
+
     }
 
     @Override

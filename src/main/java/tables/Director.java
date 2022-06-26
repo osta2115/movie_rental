@@ -10,6 +10,7 @@ import javax.persistence.*;
 @Setter
 @AllArgsConstructor
 @Builder
+@ToString
 public class Director {
 
     public Director() {
