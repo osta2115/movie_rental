@@ -9,6 +9,7 @@ import javax.persistence.*;
 @EqualsAndHashCode
 public class Product {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
     @Column (length = 64)
