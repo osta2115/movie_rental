@@ -23,8 +23,9 @@ public interface ProductsRepository {
     boolean addCategory(Category category);
     boolean removeCategory(Category category);
 
-    boolean addDirector(Director director);
-    boolean removeDirector(Director director);
+    void addDirector(Director director);
+    void removeDirector(Director director);
+    Optional<Director> findDirector(Director director);
 
     void addBranch(Branch branch);
     void removeBranch(Branch branch);

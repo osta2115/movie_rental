@@ -99,13 +99,62 @@ public class ProductRepositoryHibernate implements ProductsRepository {
     }
 
     @Override
-    public boolean addDirector(Director director) {
-        return false;
+    public void addDirector(Director director) {
+        try {
+            var selectSql = """
+                    SELECT d FROM Director d
+                    WHERE d.firstName = :firstName
+                    AND d.lastName = :lastName
+                    """;
+            var query = entityManager.createQuery(selectSql, Director.class);
+            query.setParameter("firstName", director.getFirstName());
+            query.setParameter("lastName", director.getLastName());
+            var existingDirector = query.getSingleResult();
+            entityManager.getTransaction().begin();
+            entityManager.remove(existingDirector);
+            entityManager.getTransaction().commit();
+            log.info("Director with id: {}, {}, {} deleted",
+                    director.getId(), director.getLastName(), director.getLastName());
+        } catch (NoResultException e) {
+            log.warn("Cannot delete non-existing Director {}, {}, {}",
+                    director.getId(), director.getLastName(), director.getLastName());
+        }
     }
 
     @Override
-    public boolean removeDirector(Director director) {
-        return false;
+    public void removeDirector(Director director) {
+        try {
+            var selectSql = """
+                    SELECT d FROM Director d
+                    WHERE d.firstName = :firstName
+                    AND d.lastName = :lastName
+                    """;
+            var query = entityManager.createQuery(selectSql, Director.class);
+            query.setParameter("firstName", director.getFirstName());
+            query.setParameter("lastName", director.getLastName());
+            var existingDirector = query.getSingleResult();
+            entityManager.getTransaction().begin();
+            entityManager.remove(existingDirector);
+            entityManager.getTransaction().commit();
+            log.info("Director with id: {}, {}, {} deleted",
+                    director.getId(), director.getLastName(), director.getLastName());
+        } catch (NoResultException e) {
+            log.warn("Cannot delete non-existing Director {}, {}"
+                    , director.getFirstName(), director.getLastName());
+        }
+    }
+
+    @Override
+    public Optional<Director> findDirector(Director director){
+        var selectSql = """
+                    SELECT d FROM Director d
+                    WHERE d.firstName = :firstName
+                    AND d.lastName = :lastName
+                    """;
+        var query = entityManager.createQuery(selectSql, Director.class);
+        query.setParameter("firstName", director.getFirstName());
+        query.setParameter("lastName", director.getLastName());
+        return Optional.ofNullable(query.getSingleResult());
     }
 
     @Override
@@ -140,6 +189,7 @@ public class ProductRepositoryHibernate implements ProductsRepository {
             var query = entityManager.createQuery(selectSql, Branch.class);
             query.setParameter("postalCode", postalCode);
             var existingBranch = query.getSingleResult();
+
             entityManager.getTransaction().begin();
             entityManager.remove(existingBranch);
             entityManager.getTransaction().commit();

@@ -22,7 +22,25 @@ public class MovieRentalTestR {
 
 //        addProductTest();
 //        productRepositoryHibernate.getProductById(1).ifPresent(System.out::println);
+//        branchTest();
 
+        Director director1 = Director.builder().firstName("Janina").lastName("Jakaś").build();
+        Director director2 = Director.builder().firstName("Jan").lastName("Jakiś").build();
+        productRepositoryHibernate.addDirector(director1);
+        productRepositoryHibernate.addDirector(director2);
+        productRepositoryHibernate.findDirector(director1);
+        productRepositoryHibernate.findDirector(director2);
+        productRepositoryHibernate.removeDirector(director2);
+        productRepositoryHibernate.findDirector(director1);
+        productRepositoryHibernate.findDirector(director2);
+
+
+
+        entityManager.close();
+        entityManagerFactory.close();
+    }
+
+    private static void branchTest() {
         Branch branch1 = Branch.builder().name("Gdzies").postalCode("90-190").adres("ulica1").build();
         Branch branch2 = Branch.builder().name("Gdzies 2").postalCode("90-190").adres("ulica3").build();
 
@@ -31,11 +49,6 @@ public class MovieRentalTestR {
         System.out.println(productRepositoryHibernate.findBranch(branch1));
         productRepositoryHibernate.removeBranch(branch1);
         productRepositoryHibernate.removeBranch(branch1);
-
-
-
-        entityManager.close();
-        entityManagerFactory.close();
     }
 
     private static void addProductTest() {
