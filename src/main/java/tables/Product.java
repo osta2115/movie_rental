@@ -11,6 +11,8 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @RequiredArgsConstructor
 @Builder
+@Getter
+@Setter
 @ToString
 public class Product {
     @Id

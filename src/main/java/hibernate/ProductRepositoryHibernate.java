@@ -17,6 +17,29 @@ public class ProductRepositoryHibernate implements ProductsRepository {
 
     @Override
     public void createProduct(Product product) throws SQLException {
+
+        if (getBranch(product.getBranch()).isPresent()) {
+            product.setBranch(getBranch(product.getBranch()).get());
+        }
+//        else addBranch(tmpProduct.getBranch());
+
+        if (getCarrier(product.getCarrier()).isPresent()) {
+            product.setCarrier(getCarrier(product.getCarrier()).get());
+        }
+//        else addCarrier(tmpProduct.getCarrier());
+
+        if (getCategory(product.getCategory()).isPresent()) {
+            product.setCategory(getCategory(product.getCategory()).get());
+        }
+
+        if (getDirector(product.getDirector()).isPresent()) {
+            product.setDirector(getDirector(product.getDirector()).get());
+        }
+
+        if (getPegiCategory(product.getPegiCategory()).isPresent()) {
+            product.setPegiCategory(getPegiCategory(product.getPegiCategory()).get());
+        }
+
         entityManager.getTransaction().begin();
         entityManager.persist(product);
         entityManager.getTransaction().commit();
@@ -365,14 +388,20 @@ public class ProductRepositoryHibernate implements ProductsRepository {
 
     @Override
     public Optional<Branch> getBranch(Branch branch) {
-        String postalCode = branch.getPostalCode();
-        var selectSql = """
-                SELECT b FROM Branch b
-                WHERE b.postalCode =  :postalCode
-                """;
-        var query = entityManager.createQuery(selectSql, Branch.class);
-        query.setParameter("postalCode", postalCode);
-        var existingBranch = query.getSingleResult();
-        return Optional.of(existingBranch);
+        try {
+            String postalCode = branch.getPostalCode();
+            var selectSql = """
+                    SELECT b FROM Branch b
+                    WHERE b.postalCode =  :postalCode
+                    """;
+            var query = entityManager.createQuery(selectSql, Branch.class);
+            query.setParameter("postalCode", postalCode);
+            var existingBranch = query.getSingleResult();
+            return Optional.of(existingBranch);
+        } catch (
+                NoResultException e) {
+            log.info("No branch {} {} {} found", branch.getName(), branch.getAdres(), branch.getPostalCode());
+            return Optional.empty();
+        }
     }
 }

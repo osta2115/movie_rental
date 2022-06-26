@@ -20,13 +20,18 @@ public class MovieRentalTestR {
         entityManager = entityManagerFactory.createEntityManager();
         productRepositoryHibernate = new ProductRepositoryHibernate(entityManager);
 
-//        addProductTest();
+        addProductTest();
 //        productRepositoryHibernate.getProductById(1).ifPresent(System.out::println);
 //        branchTest();
 //        directorTest();
 //        categoryTest();
 //        pegiCategoriesTest();
+//        carrierTest();
 
+
+    }
+
+    private static void carrierTest() {
         Carrier carrier1 = Carrier.builder().description("płyta").build();
         Carrier carrier2 = Carrier.builder().description("taśma").build();
         Carrier carrier3 = Carrier.builder().description("kaseta").build();
@@ -114,23 +119,26 @@ public class MovieRentalTestR {
     }
 
     private static void addProductTest() {
-        var product1 = buildProductWithName("Taki se film 2");
+        var product1 = buildProductWithName("Poczwara");
+//        var product2 = buildProductWithName("Taki se film 3");
+//        var product3 = buildProductWithName("Taki se film: powrót");
         try {
             productRepositoryHibernate.createProduct(product1);
 //            productRepositoryHibernate.createProduct(product2);
+//            productRepositoryHibernate.createProduct(product3);
         } catch (java.sql.SQLException throwable) {
             throwable.printStackTrace();
         }
     }
 
     static Product buildProductWithName(String name) {
-        Branch branch = Branch.builder().name("Gdańsk").postalCode("80-520").build();
-        Carrier carrier = Carrier.builder().description("Kaseta").build();
-        Category category = Category.builder().title("Horror").build();
-        PegiCategory pegiCategory = PegiCategory.builder().title("18+").build();
+        Branch branch = Branch.builder().name("Morskie Oko").postalCode("80-231").build();
+        Carrier carrier = Carrier.builder().description("kaseta").build();
+        Category category = Category.builder().title("Karykatura").build();
+        PegiCategory pegiCategory = PegiCategory.builder().title("0").build();
         Director director = Director.builder()
-                .firstName("Jan")
-                .lastName("Kowalski")
+                .firstName("Najlepszy")
+                .lastName("Reżyser")
                 .build();
 
         return Product.builder()
@@ -140,7 +148,7 @@ public class MovieRentalTestR {
                 .director(director)
                 .pegiCategory(pegiCategory)
                 .title(name)
-                .releaseDate(LocalDate.of(1930, 3, 27))
+                .releaseDate(LocalDate.of(1960, 6, 11))
                 .build();
     }
 }
