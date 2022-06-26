@@ -1,12 +1,14 @@
 package tables;
 
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "products")
 @EqualsAndHashCode
+@Getter
 public class Product {
 
     @Id

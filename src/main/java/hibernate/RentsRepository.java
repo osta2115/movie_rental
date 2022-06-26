@@ -1,14 +1,19 @@
 package hibernate;
 
-import java.sql.Date;
+import tables.Product;
+import tables.Rent;
+
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.List;
 
 public interface RentsRepository {
 
-    boolean isProductAvailableNow(Integer bookId);
+    List<Rent> getAllRents() throws SQLException;
 
-    boolean isProductAvailableAtGivenDate(Integer bookId, Date date);
+    boolean isProductAvailableNow(Integer id) throws SQLException;;
 
+    boolean isProductAvailableAtGivenDate(Integer id, LocalDate date) throws SQLException;;
 
-
-    Date firstAvailableDate(Integer bookId);
+    LocalDate firstAvailableDate(Integer bookId) throws SQLException;;
 }
