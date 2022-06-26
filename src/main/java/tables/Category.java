@@ -1,5 +1,6 @@
 package tables;
 
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,12 +12,13 @@ import javax.persistence.*;
 @Getter
 @Setter
 @EqualsAndHashCode
+@Builder
 public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @Column(length = 64)
+    @Column(length = 64,unique = true)
     private String title;
 }

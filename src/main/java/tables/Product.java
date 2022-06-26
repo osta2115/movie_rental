@@ -1,40 +1,45 @@
 package tables;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "products")
 @EqualsAndHashCode
-@Getter
+@AllArgsConstructor
+@RequiredArgsConstructor
+@Builder
+@ToString
 public class Product {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @Column (length = 64)
+    @Column(length = 64)
     private String title;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "director_id")
     private Director director;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "pegi_category_id")
-    private PegiCategory pegiCategoroy;
+    private PegiCategory pegiCategory;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "carrier_id")
     private Carrier carrier;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "branch_id")
     private Branch branch;
+
+    @Column (name = "release_date")
+    private LocalDate releaseDate;
 }

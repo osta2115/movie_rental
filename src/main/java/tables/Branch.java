@@ -1,9 +1,7 @@
 package tables;
 
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -12,6 +10,10 @@ import javax.persistence.*;
 @Getter
 @Setter
 @EqualsAndHashCode
+@Builder
+@AllArgsConstructor
+@RequiredArgsConstructor
+@ToString
 public class Branch {
 
     @Id
@@ -21,7 +23,7 @@ public class Branch {
     @Column(length = 64)
     private String name;
 
-    @Column(name = "postal_code", length = 6)
+    @Column(name = "postal_code", length = 6, unique = true)
     private String postalCode;
 
     @Column(length = 64)
