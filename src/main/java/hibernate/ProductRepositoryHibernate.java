@@ -79,13 +79,63 @@ public class ProductRepositoryHibernate implements ProductsRepository {
     }
 
     @Override
-    public boolean addPegiCategory(PegiCategory pegiCategory) {
-        return false;
+    public void addPegiCategory(PegiCategory pegiCategory) {
+        try {
+            var selectSql = """
+                    SELECT pc FROM PegiCategory pc
+                    WHERE pc.title = :title
+                    """;
+            var query = entityManager.createQuery(selectSql, PegiCategory.class);
+            query.setParameter("title", pegiCategory.getTitle());
+            var existingCategory = Optional.ofNullable(query.getSingleResult());
+            if (existingCategory.isPresent()) {
+                log.warn("PEGI Category with given name already exists: {}", pegiCategory.getTitle());
+            }
+        } catch (NoResultException e) {
+            entityManager.getTransaction().begin();
+            entityManager.persist(pegiCategory);
+            entityManager.getTransaction().commit();
+            log.info("Category added: {}", pegiCategory.getTitle());
+        }
     }
 
     @Override
-    public boolean removePegiCategory(PegiCategory pegiCategory) {
-        return false;
+    public void removePegiCategory(PegiCategory pegiCategory) {
+        try {
+            var selectSql = """
+                    SELECT pc FROM PegiCategory pc
+                    WHERE pc.title = :title
+                    """;
+            var query = entityManager.createQuery(selectSql, PegiCategory.class);
+            query.setParameter("title", pegiCategory.getTitle());
+            var existingCategory = query.getSingleResult();
+            entityManager.getTransaction().begin();
+            entityManager.remove(existingCategory);
+            entityManager.getTransaction().commit();
+            log.info("PEGI Category: {},deleted", pegiCategory.getTitle());
+        } catch (NoResultException e) {
+            log.warn("Cannot delete non-existing PEGI Category {}", pegiCategory.getTitle());
+        }
+    }
+
+    @Override
+    public Optional<PegiCategory> findPegiCategory(PegiCategory pegiCategory) {
+        try {
+            var selectSql = """
+                    SELECT pc FROM PegiCategory pc
+                    WHERE pc.title = :title
+                    """;
+            var query = entityManager.createQuery(selectSql, PegiCategory.class);
+            query.setParameter("title", pegiCategory.getTitle());
+            Optional<PegiCategory> singleResult = Optional.ofNullable(query.getSingleResult());
+            if (singleResult.isPresent()) {
+                log.info("PEGI Category {} found ", pegiCategory.getTitle());
+            }
+            return singleResult;
+        } catch (NoResultException e) {
+            log.info("No PEGI Category: {}", pegiCategory.getTitle());
+            return Optional.empty();
+        }
     }
 
     @Override
@@ -98,7 +148,7 @@ public class ProductRepositoryHibernate implements ProductsRepository {
             var query = entityManager.createQuery(selectSql, Category.class);
             query.setParameter("title", category.getTitle());
             var existingCategory = query.getSingleResult();
-            log.warn("Category with given name already exists: {}",category.getTitle());
+            log.warn("Category with given name already exists: {}", category.getTitle());
 
         } catch (NoResultException e) {
             entityManager.getTransaction().begin();
@@ -144,7 +194,6 @@ public class ProductRepositoryHibernate implements ProductsRepository {
         }
     }
 
-
     @Override
     public void addDirector(Director director) {
         try {
@@ -158,7 +207,7 @@ public class ProductRepositoryHibernate implements ProductsRepository {
             query.setParameter("lastName", director.getLastName());
             var existingDirector = query.getSingleResult();
             log.warn("Director with given name already exists: {} {}"
-                    ,director.getLastName(), director.getLastName());
+                    , director.getLastName(), director.getLastName());
 
         } catch (NoResultException e) {
             entityManager.getTransaction().begin();

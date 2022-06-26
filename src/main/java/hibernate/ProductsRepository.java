@@ -17,8 +17,9 @@ public interface ProductsRepository {
     boolean changeProductCategory(Integer id, Category category);
     boolean changeProductBranch(Integer id, Branch branch);
 
-    boolean addPegiCategory(PegiCategory pegiCategory);
-    boolean removePegiCategory(PegiCategory pegiCategory);
+    void addPegiCategory(PegiCategory pegiCategory);
+    void removePegiCategory(PegiCategory pegiCategory);
+    public Optional<PegiCategory> findPegiCategory(PegiCategory pegiCategory);
 
     void addCategory(Category category);
     void removeCategory(Category category);

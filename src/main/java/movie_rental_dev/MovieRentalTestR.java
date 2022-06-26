@@ -24,9 +24,34 @@ public class MovieRentalTestR {
 //        productRepositoryHibernate.getProductById(1).ifPresent(System.out::println);
 //        branchTest();
 //        directorTest();
+//        categoryTest();
+//        pegiCategoriesTest();
 
-        categoryTest();
+    }
 
+    private static void pegiCategoriesTest() {
+        PegiCategory pegi14 = PegiCategory.builder().title("14").build();
+        PegiCategory pegi18 = PegiCategory.builder().title("18").build();
+        PegiCategory pegi4 = PegiCategory.builder().title("4").build();
+
+        System.out.println("--------------------------");
+        productRepositoryHibernate.findPegiCategory(pegi4);
+        productRepositoryHibernate.findPegiCategory(pegi14);
+        productRepositoryHibernate.findPegiCategory(pegi18);
+        System.out.println("--------------------------");
+        productRepositoryHibernate.addPegiCategory(pegi4);
+        productRepositoryHibernate.addPegiCategory(pegi14);
+        productRepositoryHibernate.addPegiCategory(pegi18);
+        System.out.println("--------------------------");
+        productRepositoryHibernate.findPegiCategory(pegi4);
+        productRepositoryHibernate.findPegiCategory(pegi14);
+        productRepositoryHibernate.findPegiCategory(pegi18);
+        System.out.println("--------------------------");
+        productRepositoryHibernate.removePegiCategory(pegi4);
+        System.out.println("--------------------------");
+        productRepositoryHibernate.findPegiCategory(pegi4);
+        productRepositoryHibernate.findPegiCategory(pegi14);
+        productRepositoryHibernate.findPegiCategory(pegi18);
         entityManager.close();
         entityManagerFactory.close();
     }
