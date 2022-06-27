@@ -1,5 +1,6 @@
 package movie_rental_dev;
 
+import action_strategy.StrategyPicker;
 import hibernate.ProductRepositoryHibernate;
 import tables.*;
 
@@ -17,11 +18,11 @@ public class MovieRentalTestR {
 
 
     public static void main(String[] args) {
-        entityManagerFactory = Persistence.createEntityManagerFactory("mysql-movie-rental-dev");
-        entityManager = entityManagerFactory.createEntityManager();
-        productRepositoryHibernate = new ProductRepositoryHibernate(entityManager);
+//        entityManagerFactory = Persistence.createEntityManagerFactory("mysql-movie-rental-dev");
+//        entityManager = entityManagerFactory.createEntityManager();
+//        productRepositoryHibernate = new ProductRepositoryHibernate(entityManager);
 
-        categoryChangeTest();
+//        categoryChangeTest();
 //        addProductTest();
 //        productRepositoryHibernate.getProductById(11).ifPresent(System.out::println);
 //        branchTest();
@@ -30,14 +31,13 @@ public class MovieRentalTestR {
 //        pegiCategoriesTest();
 //        carrierTest();
 
-
-
+        System.out.println(StrategyPicker.getOptionFromScanner());
 //        productRepositoryHibernate.removeCategory(Category.builder().title("Karykatura").build());
 //        productRepositoryHibernate.deleteProductById(11);
 //        productRepositoryHibernate.deleteProductById(43);
 //        productRepositoryHibernate.getProductById(11).ifPresent(System.out::println);
 
-        System.out.println("><><");
+//        System.out.println("><><");
 //        List<Product> allProducts = productRepositoryHibernate.getAllProducts();
 //        allProducts.forEach(System.out::println);
 
