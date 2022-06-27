@@ -1,24 +1,16 @@
 package tables;
 
-
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 @Table(name = "branches")
 @Getter
 @Setter
-@EqualsAndHashCode
-@Builder
-@AllArgsConstructor
 @ToString
+@EqualsAndHashCode
 public class Branch {
-
-    public Branch() {
-
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -32,7 +24,4 @@ public class Branch {
 
     @Column(length = 64)
     private String adres;
-
-    @OneToMany (mappedBy = "branch", cascade = CascadeType.ALL, orphanRemoval = false)
-    private Set<Product> products;
 }

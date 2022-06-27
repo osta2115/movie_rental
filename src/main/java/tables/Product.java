@@ -8,7 +8,6 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "products")
 @EqualsAndHashCode
-@Builder
 @Getter
 @Setter
 @ToString
@@ -52,7 +51,7 @@ public class Product {
     @Column(length = 64)
     private String title;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
 

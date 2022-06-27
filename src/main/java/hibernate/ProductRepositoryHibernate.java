@@ -17,7 +17,6 @@ public class ProductRepositoryHibernate implements ProductsRepository {
 
     @Override
     public void createProduct(Product product) {
-
         if (getBranch(product.getBranch()).isPresent()) {
             product.setBranch(getBranch(product.getBranch()).get());
         } else addBranch(product.getBranch());
@@ -36,11 +35,7 @@ public class ProductRepositoryHibernate implements ProductsRepository {
 
         if (getPegiCategory(product.getPegiCategory()).isPresent()) {
             product.setPegiCategory(getPegiCategory(product.getPegiCategory()).get());
-        } else {
-            addPegiCategory(product.getPegiCategory());
-//            TODO zamienić metody dodające na metody, które zwrócą obiekt dodany,
-//             wykorzystać to, aby dodając produkt dodać od produkt do listy.
-        }
+        } else addPegiCategory(product.getPegiCategory());
 
         entityManager.getTransaction().begin();
         entityManager.persist(product);

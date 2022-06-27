@@ -3,20 +3,14 @@ package tables;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 @Table(name = "pegi_categories")
 @Getter
 @Setter
-@EqualsAndHashCode
-@AllArgsConstructor
-@Builder
 @ToString
+@EqualsAndHashCode
 public class PegiCategory {
-
-    public PegiCategory() {
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -24,7 +18,4 @@ public class PegiCategory {
 
     @Column(length = 64, unique = true)
     private String title;
-
-    @OneToMany(mappedBy = "pegiCategory", cascade = CascadeType.ALL)
-    private Set<Product> products;
 }

@@ -21,26 +21,31 @@ public class MovieRentalTestR {
         entityManager = entityManagerFactory.createEntityManager();
         productRepositoryHibernate = new ProductRepositoryHibernate(entityManager);
 
-        addProductTest();
 //        addProductTest();
-//        productRepositoryHibernate.getProductById(1).ifPresent(System.out::println);
+        productRepositoryHibernate.getProductById(10).ifPresent(System.out::println);
 //        branchTest();
 //        directorTest();
 //        categoryTest();
 //        pegiCategoriesTest();
 //        carrierTest();
 
-//        productRepositoryHibernate.deleteProductById(5);
+//        productRepositoryHibernate.removeCategory(Category.builder().title("Karykatura").build());
+        productRepositoryHibernate.deleteProductById(10);
 //        productRepositoryHibernate.deleteProductById(43);
-        List<Product> allProducts = productRepositoryHibernate.getAllProducts();
-        allProducts.forEach(System.out::println);
+        productRepositoryHibernate.getProductById(10).ifPresent(System.out::println);
+
+//        List<Product> allProducts = productRepositoryHibernate.getAllProducts();
+//        allProducts.forEach(System.out::println);
 
     }
 
     private static void carrierTest() {
-        Carrier carrier1 = Carrier.builder().description("płyta").build();
-        Carrier carrier2 = Carrier.builder().description("taśma").build();
-        Carrier carrier3 = Carrier.builder().description("kaseta").build();
+        Carrier carrier1 = new Carrier();
+        carrier1.setDescription("płyta");
+        Carrier carrier2 = new Carrier();
+        carrier2.setDescription("taśma");
+        Carrier carrier3 = new Carrier();
+        carrier3.setDescription("kaseta");
 
         System.out.println(productRepositoryHibernate.getCarrier(carrier1).isPresent());
         System.out.println(productRepositoryHibernate.getCarrier(carrier2).isPresent());
@@ -63,9 +68,12 @@ public class MovieRentalTestR {
     }
 
     private static void pegiCategoriesTest() {
-        PegiCategory pegi14 = PegiCategory.builder().title("14").build();
-        PegiCategory pegi18 = PegiCategory.builder().title("18").build();
-        PegiCategory pegi4 = PegiCategory.builder().title("4").build();
+        PegiCategory pegi14 =new PegiCategory();
+        pegi14.setTitle("14");
+        PegiCategory pegi18 =new PegiCategory();
+        pegi18.setTitle("18");
+        PegiCategory pegi4 = new PegiCategory();
+        pegi14.setTitle("4");
 
         System.out.println("--------------------------");
         productRepositoryHibernate.getPegiCategory(pegi4);
@@ -90,8 +98,10 @@ public class MovieRentalTestR {
     }
 
     private static void categoryTest() {
-        Category category1 = Category.builder().title("Dramat").build();
-        Category category2 = Category.builder().title("Komedia").build();
+        Category category1 = new Category();
+        category1.setTitle("Komedia");
+        Category category2 = new Category();
+        category2.setTitle("Tragedia");
         productRepositoryHibernate.addCategory(category1);
         productRepositoryHibernate.addCategory(category1);
         productRepositoryHibernate.addCategory(category2);
@@ -102,8 +112,12 @@ public class MovieRentalTestR {
     }
 
     private static void directorTest() {
-        Director director1 = Director.builder().firstName("Janina").lastName("Jakaś").build();
-        Director director2 = Director.builder().firstName("Jan").lastName("Jakiś").build();
+        Director director1 = new Director();
+        director1.setFirstName("Janina");
+        director1.setLastName("Jakaś");
+        Director director2 = new Director();
+        director2.setFirstName("Jan");
+        director2.setLastName("Jakiś");
         productRepositoryHibernate.addDirector(director1);
         productRepositoryHibernate.addDirector(director2);
         productRepositoryHibernate.getDirector(director1);
@@ -114,8 +128,16 @@ public class MovieRentalTestR {
     }
 
     private static void branchTest() {
-        Branch branch1 = Branch.builder().name("Gdzies").postalCode("90-190").adres("ulica1").build();
-        Branch branch2 = Branch.builder().name("Gdzies 2").postalCode("90-190").adres("ulica3").build();
+        Branch branch1 = new Branch();
+        branch1.setName("Gdzies");
+        branch1.setAdres("ulica 1");
+        branch1.setPostalCode("90-123");
+
+        Branch branch2 = new Branch();
+        branch2.setName("Gdzies 2");
+        branch2.setAdres("inna ulica");
+        branch2.setPostalCode("45-123");
+
 
         productRepositoryHibernate.addBranch(branch1);
         productRepositoryHibernate.addBranch(branch2);
@@ -126,33 +148,41 @@ public class MovieRentalTestR {
 
     private static void addProductTest() {
         var product1 = buildProductWithName("Poczwara");
-//        var product2 = buildProductWithName("Taki se film 3");
-//        var product3 = buildProductWithName("Taki se film: powrót");
+        var product2 = buildProductWithName("Taki se film 3");
+        var product3 = buildProductWithName("Taki se film: powrót");
         productRepositoryHibernate.createProduct(product1);
-//            productRepositoryHibernate.createProduct(product2);
-//            productRepositoryHibernate.createProduct(product3);
+        productRepositoryHibernate.createProduct(product2);
+        productRepositoryHibernate.createProduct(product3);
 
     }
 
     static Product buildProductWithName(String name) {
-        Branch branch = Branch.builder().name("Morskie Oko").postalCode("80-231").build();
-        Carrier carrier = Carrier.builder().description("kaseta").build();
-        Category category = Category.builder().title("Karykatura").build();
-        PegiCategory pegiCategory = PegiCategory.builder().title("0").build();
-        Director director = Director.builder()
-                .firstName("Najlepszy")
-                .lastName("Reżyser")
-                .build();
+        Branch branch = new Branch();
+        branch.setName("Gdzies");
+        branch.setAdres("ulica");
+        branch.setPostalCode("12-345");
 
-        return Product.builder()
-                .branch(branch)
-                .carrier(carrier)
-                .category(category)
-                .director(director)
-                .pegiCategory(pegiCategory)
-                .title(name)
-                .releaseDate(LocalDate.of(1960, 6, 11))
-                .build();
+        Carrier carrier = new Carrier();
+        carrier.setDescription("taśma");
+
+        Category category = new Category();
+        category.setTitle("DRAMAT");
+
+        PegiCategory pegiCategory = new PegiCategory();
+        pegiCategory.setTitle("+18");
+        Director director = new Director();
+                director.setFirstName("Jan");
+                director.setLastName("Janowski");
+
+                Product product = new Product();
+                product.setPegiCategory(pegiCategory);
+                product.setCategory(category);
+                product.setDirector(director);
+                product.setCarrier(carrier);
+                product.setBranch(branch);
+                product.setTitle(name);
+                product.setReleaseDate(LocalDate.of(1996, 12, 13));
+        return product;
     }
 }
 
