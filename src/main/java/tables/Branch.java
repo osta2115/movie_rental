@@ -1,6 +1,5 @@
 package tables;
 
-
 import lombok.*;
 
 import javax.persistence.*;
@@ -9,11 +8,8 @@ import javax.persistence.*;
 @Table(name = "branches")
 @Getter
 @Setter
-@EqualsAndHashCode
-@Builder
-@AllArgsConstructor
-@RequiredArgsConstructor
 @ToString
+@EqualsAndHashCode
 public class Branch {
 
     @Id
