@@ -21,22 +21,34 @@ public class MovieRentalTestR {
         entityManager = entityManagerFactory.createEntityManager();
         productRepositoryHibernate = new ProductRepositoryHibernate(entityManager);
 
+        categoryChangeTest();
 //        addProductTest();
-        productRepositoryHibernate.getProductById(10).ifPresent(System.out::println);
+//        productRepositoryHibernate.getProductById(11).ifPresent(System.out::println);
 //        branchTest();
 //        directorTest();
 //        categoryTest();
 //        pegiCategoriesTest();
 //        carrierTest();
 
-//        productRepositoryHibernate.removeCategory(Category.builder().title("Karykatura").build());
-        productRepositoryHibernate.deleteProductById(10);
-//        productRepositoryHibernate.deleteProductById(43);
-        productRepositoryHibernate.getProductById(10).ifPresent(System.out::println);
 
+
+//        productRepositoryHibernate.removeCategory(Category.builder().title("Karykatura").build());
+//        productRepositoryHibernate.deleteProductById(11);
+//        productRepositoryHibernate.deleteProductById(43);
+//        productRepositoryHibernate.getProductById(11).ifPresent(System.out::println);
+
+        System.out.println("><><");
 //        List<Product> allProducts = productRepositoryHibernate.getAllProducts();
 //        allProducts.forEach(System.out::println);
 
+    }
+
+    private static void categoryChangeTest() {
+        productRepositoryHibernate.getListOfProductWithGivenTitle("to jest ***** dramat").forEach(System.out::println);
+        Category category = new Category();
+        category.setTitle("test zmiany kategorii");
+        System.out.println(productRepositoryHibernate.changeProductCategory(7, category));
+        System.out.println(productRepositoryHibernate.changeProductCategory(300, category));
     }
 
     private static void carrierTest() {

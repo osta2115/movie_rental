@@ -6,8 +6,9 @@ import tables.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
-import java.sql.SQLException;
+import javax.persistence.TypedQuery;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Slf4j
@@ -45,19 +46,19 @@ public class ProductRepositoryHibernate implements ProductsRepository {
     @Override
     public void deleteProductById(Integer id) {
         try {
-
             var selectProductsById = """
                     SELECT p FROM Product p
                     WHERE p.id =  :id
                     """;
             var query = entityManager.createQuery(selectProductsById, Product.class);
             query.setParameter("id", id);
+
             var product = Optional.of(query.getSingleResult());
-            if (product.isPresent()) {
-                entityManager.getTransaction().begin();
-                entityManager.remove(product.get());
-                entityManager.getTransaction().commit();
-            }
+
+            entityManager.getTransaction().begin();
+            entityManager.remove(product.get());
+            entityManager.getTransaction().commit();
+
         } catch (NoResultException e) {
             log.warn("Cannot delete non-existing product. product id: {}", id);
         }
@@ -65,45 +66,87 @@ public class ProductRepositoryHibernate implements ProductsRepository {
 
     @Override
     public Optional<Product> getProductById(Integer id) {
-        var selectproductsbyid = """
-                SELECT p FROM Product p
-                WHERE p.id =  :id
-                """;
-        var query = entityManager.createQuery(selectproductsbyid, Product.class);
-        query.setParameter("id", id);
-        return Optional.of(query.getSingleResult());
+        try {
+            var selectproductsbyid = """
+                    SELECT p FROM Product p
+                    WHERE p.id =  :id
+                    """;
+            var query = entityManager.createQuery(selectproductsbyid, Product.class);
+            query.setParameter("id", id);
+            return Optional.of(query.getSingleResult());
+        } catch (NoResultException e) {
+            log.warn("No product with id: {} found", id);
+            return Optional.empty();
+        }
     }
 
     @Override
-    public Product getProductName(String name) {
-        return null;
+    public List<Product> getListOfProductWithGivenTitle(String title) {
+        var sqlStatement = """
+                SELECT p FROM Product p
+                WHERE p.title = :title
+                """;
+        TypedQuery<Product> query = entityManager.createQuery(sqlStatement, Product.class);
+        query.setParameter("title", title);
+
+        return query.getResultList();
     }
 
     @Override
     public List<Product> getAllProducts() {
 
-        var selectAllProducts = """
-                SELECT NEW tables.Product (p.id, p.title, p.category, p.director, p.pegiCategory, p.carrier, p.branch, p.releaseDate)
-                                
-                FROM Product p
-                """;
-        var query = entityManager.createQuery(selectAllProducts, Product.class);
-        return query.getResultList();
+        try {
+            var selectAllProducts = """
+                    SELECT NEW tables.Product (p.id, p.title, p.category, p.director, p.pegiCategory, p.carrier, p.branch, p.releaseDate)
+                                    
+                    FROM Product p
+                    """;
+            var query = entityManager.createQuery(selectAllProducts, Product.class);
+            return query.getResultList();
+        } catch (NoResultException e) {
+            log.info("No products in database!");
+        }
+        return List.of();
+    }
+
+    @Override
+    public Optional<Product> changeProductCategory(Integer id, Category category) {
+        Optional<Product> exstingProduct = getProductById(id);
+        Category existigCategory = addCategory(category);
+
+        try {
+            entityManager.getTransaction().begin();
+            exstingProduct.ifPresent(p -> p.setCategory(existigCategory));
+            entityManager.getTransaction().commit();
+
+            return exstingProduct;
+        } catch (NoSuchElementException e) {
+            log.warn("No product with id {}", id);
+            return Optional.empty();
+        }
 
     }
 
     @Override
-    public boolean changeProductCategory(Integer id, Category category) {
-        return false;
+    public Optional<Product> changeProductBranch(Integer id, Branch branch) {
+        Optional<Product> exstingProduct = getProductById(id);
+        Branch existingBranch = addBranch(branch);
+
+        try {
+            entityManager.getTransaction().begin();
+            exstingProduct.ifPresent(p -> p.setBranch(existingBranch));
+            entityManager.getTransaction().commit();
+
+            return exstingProduct;
+        } catch (NoSuchElementException e) {
+            log.warn("No product with id {}", id);
+            return Optional.empty();
+        }
+
     }
 
     @Override
-    public boolean changeProductBranch(Integer id, Branch branch) {
-        return false;
-    }
-
-    @Override
-    public void addCarrier(Carrier carrier) {
+    public Carrier addCarrier(Carrier carrier) {
         try {
             var selectSql = """
                     SELECT c FROM Carrier c
@@ -112,19 +155,21 @@ public class ProductRepositoryHibernate implements ProductsRepository {
             var query = entityManager.createQuery(selectSql, Carrier.class);
             query.setParameter("description", carrier.getDescription());
             var existnigCarrier = Optional.ofNullable(query.getSingleResult());
-            if (existnigCarrier.isPresent()) {
-                log.warn("Carrier with given name already exists: {}", carrier.getDescription());
-            }
+
+            log.warn("Carrier with given name already exists: {}", carrier.getDescription());
+            return existnigCarrier.get();
+
         } catch (NoResultException e) {
             entityManager.getTransaction().begin();
             entityManager.persist(carrier);
             entityManager.getTransaction().commit();
             log.info("Carrier type added: {}", carrier.getDescription());
+            return carrier;
         }
     }
 
     @Override
-    public void removeCarrier(Carrier carrier) {
+    public boolean removeCarrier(Carrier carrier) {
         try {
             var selectSql = """
                     SELECT c FROM Carrier c
@@ -137,8 +182,10 @@ public class ProductRepositoryHibernate implements ProductsRepository {
             entityManager.remove(existingCarrier);
             entityManager.getTransaction().commit();
             log.info("Carrier type: {},deleted", carrier.getDescription());
+            return true;
         } catch (NoResultException e) {
             log.warn("Cannot delete non-existing carrier type {}", carrier.getDescription());
+            return false;
         }
     }
 
@@ -163,7 +210,7 @@ public class ProductRepositoryHibernate implements ProductsRepository {
     }
 
     @Override
-    public void addPegiCategory(PegiCategory pegiCategory) {
+    public PegiCategory addPegiCategory(PegiCategory pegiCategory) {
         try {
             var selectSql = """
                     SELECT pc FROM PegiCategory pc
@@ -172,19 +219,19 @@ public class ProductRepositoryHibernate implements ProductsRepository {
             var query = entityManager.createQuery(selectSql, PegiCategory.class);
             query.setParameter("title", pegiCategory.getTitle());
             var existingCategory = Optional.ofNullable(query.getSingleResult());
-            if (existingCategory.isPresent()) {
-                log.warn("PEGI Category with given name already exists: {}", pegiCategory.getTitle());
-            }
+            log.warn("PEGI Category with given name already exists: {}", pegiCategory.getTitle());
+            return existingCategory.get();
         } catch (NoResultException e) {
             entityManager.getTransaction().begin();
             entityManager.persist(pegiCategory);
             entityManager.getTransaction().commit();
             log.info("Category added: {}", pegiCategory.getTitle());
+            return pegiCategory;
         }
     }
 
     @Override
-    public void removePegiCategory(PegiCategory pegiCategory) {
+    public boolean removePegiCategory(PegiCategory pegiCategory) {
         try {
             var selectSql = """
                     SELECT pc FROM PegiCategory pc
@@ -197,8 +244,10 @@ public class ProductRepositoryHibernate implements ProductsRepository {
             entityManager.remove(existingCategory);
             entityManager.getTransaction().commit();
             log.info("PEGI Category: {},deleted", pegiCategory.getTitle());
+            return true;
         } catch (NoResultException e) {
             log.warn("Cannot delete non-existing PEGI Category {}", pegiCategory.getTitle());
+            return false;
         }
     }
 
@@ -223,7 +272,7 @@ public class ProductRepositoryHibernate implements ProductsRepository {
     }
 
     @Override
-    public void addCategory(Category category) {
+    public Category addCategory(Category category) {
         try {
             var selectSql = """
                     SELECT c FROM Category c
@@ -233,17 +282,18 @@ public class ProductRepositoryHibernate implements ProductsRepository {
             query.setParameter("title", category.getTitle());
             var existingCategory = query.getSingleResult();
             log.warn("Category with given name already exists: {}", category.getTitle());
-
+            return existingCategory;
         } catch (NoResultException e) {
             entityManager.getTransaction().begin();
             entityManager.persist(category);
             entityManager.getTransaction().commit();
             log.info("Category added: {}", category.getTitle());
+            return category;
         }
     }
 
     @Override
-    public void removeCategory(Category category) {
+    public boolean removeCategory(Category category) {
         try {
             var selectSql = """
                     SELECT c FROM Category c
@@ -256,8 +306,10 @@ public class ProductRepositoryHibernate implements ProductsRepository {
             entityManager.remove(existingCategory);
             entityManager.getTransaction().commit();
             log.info("Category titled: {},deleted", category.getTitle());
+            return true;
         } catch (NoResultException e) {
             log.warn("Cannot delete non-existing Category {}", category.getTitle());
+            return false;
         }
     }
 
@@ -279,7 +331,7 @@ public class ProductRepositoryHibernate implements ProductsRepository {
     }
 
     @Override
-    public void addDirector(Director director) {
+    public Director addDirector(Director director) {
         try {
             var selectSql = """
                     SELECT d FROM Director d
@@ -289,20 +341,22 @@ public class ProductRepositoryHibernate implements ProductsRepository {
             var query = entityManager.createQuery(selectSql, Director.class);
             query.setParameter("firstName", director.getFirstName());
             query.setParameter("lastName", director.getLastName());
-            var existingDirector = query.getSingleResult();
+            Optional<Director> existingDirector = Optional.ofNullable(query.getSingleResult());
             log.warn("Director with given name already exists: {} {}"
                     , director.getLastName(), director.getLastName());
+            return existingDirector.get();
 
         } catch (NoResultException e) {
             entityManager.getTransaction().begin();
             entityManager.persist(director);
             entityManager.getTransaction().commit();
             log.info("Director added: {}, {} {}", director.getId(), director.getLastName(), director.getLastName());
+            return director;
         }
     }
 
     @Override
-    public void removeDirector(Director director) {
+    public boolean removeDirector(Director director) {
         try {
             var selectSql = """
                     SELECT d FROM Director d
@@ -318,9 +372,11 @@ public class ProductRepositoryHibernate implements ProductsRepository {
             entityManager.getTransaction().commit();
             log.info("Director with id: {}, {}, {} deleted",
                     director.getId(), director.getLastName(), director.getLastName());
+            return true;
         } catch (NoResultException e) {
             log.warn("Cannot delete non-existing Director {}, {}"
                     , director.getFirstName(), director.getLastName());
+            return false;
         }
     }
 
@@ -343,7 +399,7 @@ public class ProductRepositoryHibernate implements ProductsRepository {
     }
 
     @Override
-    public void addBranch(Branch branch) {
+    public Branch addBranch(Branch branch) {
         String postalCode = branch.getPostalCode();
         try {
             var selectSql = """
@@ -352,19 +408,22 @@ public class ProductRepositoryHibernate implements ProductsRepository {
                     """;
             var query = entityManager.createQuery(selectSql, Branch.class);
             query.setParameter("postalCode", postalCode);
-            Optional<Branch> existingBranch = Optional.ofNullable(query.getSingleResult());
-            log.warn("Branch with given postal code already exists: {}", postalCode);
 
+            Optional<Branch> existingBranch = Optional.ofNullable(query.getSingleResult());
+
+            log.warn("Branch with given postal code already exists: {}", postalCode);
+            return existingBranch.get();
         } catch (NoResultException e) {
             entityManager.getTransaction().begin();
             entityManager.persist(branch);
             entityManager.getTransaction().commit();
             log.info("Branch added: {}", branch);
+            return branch;
         }
     }
 
     @Override
-    public void removeBranch(Branch branch) {
+    public boolean removeBranch(Branch branch) {
         String postalCode = branch.getPostalCode();
         try {
             var selectSql = """
@@ -379,11 +438,13 @@ public class ProductRepositoryHibernate implements ProductsRepository {
             entityManager.remove(existingBranch);
             entityManager.getTransaction().commit();
             log.info("Branch {}, {} deleted", branch.getName(), branch.getPostalCode());
+            return true;
         } catch (NoResultException e) {
             log.warn("Cannot delete non-existing Branch {}, {}, {}",
                     branch.getName(),
                     branch.getPostalCode(),
                     branch.getAdres());
+            return false;
         }
     }
 
