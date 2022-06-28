@@ -1,7 +1,6 @@
 package movie_rental_dev;
 
-import action_strategy.StrategyPicker;
-import action_strategy.login_panel.LoginContext;
+import action_strategy.login_panel.LoginLogic;
 import hibernate.ProductRepositoryHibernate;
 import tables.*;
 
@@ -30,7 +29,7 @@ public class MovieRentalTestR {
 //        pegiCategoriesTest();
 //        carrierTest();
 
-        LoginContext.getInstance().startLoginPanel();
+        LoginLogic.getInstance().startLoginPanel();
 //        System.out.println(StrategyPicker.getOptionFromScanner());
 //        Scanner sc = new Scanner(System.in);
 //        while (true){
