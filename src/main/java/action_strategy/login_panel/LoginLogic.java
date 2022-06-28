@@ -1,5 +1,6 @@
 package action_strategy.login_panel;
 
+import action_strategy.Context;
 import action_strategy.Strategy;
 import action_strategy.StrategyPicker;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +23,7 @@ public class LoginLogic {
 
     private void LoginContextScreen() {
         optionPane();
-        LoginContext loginContext = new LoginContext();
+        Context loginContext = new LoginContext();
         Strategy operation = loginContext.operation(StrategyPicker.getOptionFromScanner());
         operation.algorithm();
     }

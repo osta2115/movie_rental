@@ -2,9 +2,16 @@ package action_strategy.admin_panel;
 
 import action_strategy.Strategy;
 import action_strategy.StrategyPicker;
-import action_strategy.login_panel.LoginContext;
 
 public class AdminPanelLogic {
+    private static final AdminPanelLogic INSTANCE = new AdminPanelLogic();
+
+    private AdminPanelLogic() {
+    }
+
+    public static AdminPanelLogic getInstance() {
+        return INSTANCE;
+    }
     public void startAdminPanel() {
         displayWelcomeMsg();
         AdminPanelContextScreen();

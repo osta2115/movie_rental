@@ -1,7 +1,7 @@
 package action_strategy.login_panel;
 
 import action_strategy.Strategy;
-import action_strategy.admin_defining_panel.AdminDefiningLogic;
+import action_strategy.admin_defining.AdminDefiningLogic;
 
 public class LoginStrategy implements Strategy {
 
