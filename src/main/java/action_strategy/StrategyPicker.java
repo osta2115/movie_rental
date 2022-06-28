@@ -1,40 +1,42 @@
 package action_strategy;
 
+import java.util.Optional;
 import java.util.Scanner;
 
 public enum StrategyPicker {
-    OPTION_1(1),
-    OPTION_2(2),
-    OPTION_3(3),
-    OPTION_4(4),
-    OPTION_5(5),
-    OPTION_6(6),
-    OPTION_7(7),
-    OPTION_8(8),
-    OPTION_9(9);
+    OPTION_0,
+    OPTION_1,
+    OPTION_2,
+    OPTION_3,
+    OPTION_4,
+    OPTION_5,
+    OPTION_6,
+    OPTION_7,
+    OPTION_8,
+    OPTION_9;
 
-    private int intValue;
-
-    StrategyPicker(int option) {
-
-    }
-
-    public int getOption() {
-        return intValue;
-    }
-    public static StrategyPicker getOptionFromScanner(){
-        System.out.println("Input required:");
-        Scanner scanner = new Scanner(System.in);
-        char input = scanner.next().charAt(0);
-        int intInput = (int) input;
-        System.out.println(input);
-        for (StrategyPicker v : StrategyPicker.values()) {
-            System.out.println(v.getOption());
-            if (v.getOption() == intInput){
-                return v;
+    public static StrategyPicker getTypeByOrdinal(int ordinal) {
+        for (StrategyPicker t : StrategyPicker.values()) {
+            if (t.ordinal() == ordinal) {
+                return t;
             }
         }
-        System.out.println("Incorrect input. Try again:");
-        return StrategyPicker.getOptionFromScanner();
+        return null;
     }
+
+
+    public static StrategyPicker getOptionFromScanner() {
+        System.out.println("Input required:");
+        Scanner scanner = new Scanner(System.in);
+        int input = scanner.nextInt();
+        Optional<StrategyPicker> strategyPicker = Optional.ofNullable(StrategyPicker.getTypeByOrdinal(input));
+
+        if (strategyPicker.isEmpty()) {
+            System.out.printf("Incorrect input. New ");
+            return getOptionFromScanner();
+        }
+
+        return strategyPicker.get();
+    }
+
 }

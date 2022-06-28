@@ -1,19 +1,29 @@
 package action_strategy.login_panel;
 
-import action_strategy.Commons;
+import action_strategy.StrategyCommons;
 import action_strategy.Context;
 import action_strategy.StrategyPicker;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.Scanner;
-
 @Slf4j
 public class LoginContext implements Context {
+    private static final LoginContext INSTANCE = new LoginContext();
 
-    public void welcomeScreen() {
+    private LoginContext() {
+    }
+
+    public static LoginContext getInstance() {
+        return INSTANCE;
+    }
+
+    public void startLoginPanel() {
         displayWelcomeMsg();
-        char answer = optionPane();
-//        operation();
+        LoginContextScreen();
+    }
+
+    public void LoginContextScreen() {
+        optionPane();
+        operation(StrategyPicker.getOptionFromScanner());
     }
 
     @Override
@@ -22,10 +32,10 @@ public class LoginContext implements Context {
         switch (strategyPicker) {
             case OPTION_1 -> login();
             case OPTION_2 -> register();
-            case OPTION_3 -> Commons.exitShop();
+            case OPTION_3 -> StrategyCommons.exitShop();
             default -> {
-                log.info("Wrong answer use numbers shown on screen");
-//                operation();
+                log.info("Wrong - enter command again");
+                operation(StrategyPicker.getOptionFromScanner());
             }
         }
     }
@@ -33,26 +43,27 @@ public class LoginContext implements Context {
     private void displayWelcomeMsg() {
         System.out.println("<------------------------------------------->");
         System.out.println("<--------- WELCOME TO MOVIE RENTAL --------->");
-        System.out.println("<------------------------------------------->\n");
+        System.out.println("<------------------------------------------->");
     }
 
-    private char optionPane(){
-        Scanner scanner = new Scanner(System.in);
-
+    private void optionPane() {
         System.out.println("Select option:");
-        System.out.println("<------------------------------------------->\n");
+        System.out.println("<------------------------------------------->");
         System.out.println("1. Log in");
         System.out.println("2. Register");
         System.out.println("3. Exit movie rental");
-        System.out.println("<------------------------------------------->\n");
-
-        return scanner.next().charAt(0);
-
+        System.out.println("<------------------------------------------->");
     }
 
     private void register() {
+        // TODO register method
+        System.out.println("Register method //not yet implemented//");
+        System.out.println("Please log in:");
+        login();
     }
 
     private void login() {
+        // TODO login method
+        System.out.println("Login method //not yet implemented//");
     }
 }

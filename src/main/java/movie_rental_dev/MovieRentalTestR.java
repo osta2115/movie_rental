@@ -1,14 +1,13 @@
 package movie_rental_dev;
 
 import action_strategy.StrategyPicker;
+import action_strategy.login_panel.LoginContext;
 import hibernate.ProductRepositoryHibernate;
 import tables.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.time.LocalDate;
-import java.util.List;
 
 public class MovieRentalTestR {
 
@@ -31,7 +30,12 @@ public class MovieRentalTestR {
 //        pegiCategoriesTest();
 //        carrierTest();
 
-        System.out.println(StrategyPicker.getOptionFromScanner());
+        LoginContext.getInstance().startLoginPanel();
+//        System.out.println(StrategyPicker.getOptionFromScanner());
+//        Scanner sc = new Scanner(System.in);
+//        while (true){
+//            System.out.println(StrategyPicker.getTypeByOrdinal(sc.nextInt()));
+//        }
 //        productRepositoryHibernate.removeCategory(Category.builder().title("Karykatura").build());
 //        productRepositoryHibernate.deleteProductById(11);
 //        productRepositoryHibernate.deleteProductById(43);
