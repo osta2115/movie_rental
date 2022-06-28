@@ -1,6 +1,7 @@
 package action_strategy.login_panel;
 
 import action_strategy.Strategy;
+import action_strategy.admin_defining_panel.AdminDefiningLogic;
 
 public class LoginStrategy implements Strategy {
 
@@ -8,6 +9,9 @@ public class LoginStrategy implements Strategy {
     public void algorithm() {
         // TODO login method
         System.out.println("Login method //not yet implemented//");
+        // login passed
+        boolean temporaryIsAdmin = true;
+        new AdminDefiningLogic().definePermission(temporaryIsAdmin);
     }
 
 }
