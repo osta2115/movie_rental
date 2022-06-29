@@ -1,5 +1,6 @@
 package action_strategy.admin_panel;
 
+import action_strategy.Context;
 import action_strategy.Strategy;
 import action_strategy.StrategyPicker;
 
@@ -19,9 +20,9 @@ public class AdminPanelLogic {
 
     private void AdminPanelContextScreen() {
         optionPane();
-        AdminPanelContext adminPanelContext = new AdminPanelContext();
-        Strategy operation = adminPanelContext.operation(StrategyPicker.getOptionFromScanner());
-        operation.algorithm();
+        Context adminPanelContext = new AdminPanelContext();
+        Strategy strategy = adminPanelContext.operation(StrategyPicker.getOptionFromScanner());
+        strategy.algorithm();
     }
 
     private void displayWelcomeMsg() {
