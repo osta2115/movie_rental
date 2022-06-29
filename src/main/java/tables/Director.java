@@ -1,9 +1,6 @@
 package tables;
 
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -11,8 +8,8 @@ import javax.persistence.*;
 @Table(name = "directors")
 @Getter
 @Setter
+@ToString
 @EqualsAndHashCode
-@Builder
 public class Director {
 
     @Id
