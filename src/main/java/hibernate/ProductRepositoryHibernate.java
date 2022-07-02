@@ -528,4 +528,18 @@ public class ProductRepositoryHibernate implements ProductsRepository {
                 .filter(p -> p.getPegiCategory().getTitle().equalsIgnoreCase(title))
                 .toList();
     }
+
+    public List<Product> getListOfProductCreatedINGivenYear(String year) {
+        List<Product> list = getAllProducts();
+        return list.stream()
+                .filter(p -> year.equalsIgnoreCase(String.valueOf(p.getReleaseDate().getYear())))
+                .toList();
+    }
+
+    public List<Integer> GetListOfAllYears() {
+        List<Product> list = getAllProducts();
+        return list.stream()
+                .map(p -> p.getReleaseDate().getYear())
+                .toList();
+    }
 }
