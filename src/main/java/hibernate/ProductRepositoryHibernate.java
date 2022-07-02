@@ -499,4 +499,33 @@ public class ProductRepositoryHibernate implements ProductsRepository {
     }
 
 
+    public List<Director> getListOfAllDirectors() {
+        List<Product> list = getAllProducts();
+        return list.stream()
+                .map(Product::getDirector)
+                .toList();
+    }
+
+    public List<Product> getListOfProductWithGivenDirectorName(String name) {
+        List<Product> list = getAllProducts();
+        return list.stream()
+                .filter(p ->
+                        name.equalsIgnoreCase(
+                                p.getDirector().getFirstName() + " " + p.getDirector().getLastName()))
+                .toList();
+    }
+
+    public List<PegiCategory> getListOfAllPegiCategories() {
+        List<Product> list = getAllProducts();
+        return list.stream()
+                .map(Product::getPegiCategory)
+                .toList();
+    }
+
+    public List<Product> getListOfProductWithGivenPegiCategory(String title) {
+        List<Product> list = getAllProducts();
+        return list.stream()
+                .filter(p -> p.getPegiCategory().getTitle().equalsIgnoreCase(title))
+                .toList();
+    }
 }

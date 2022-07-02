@@ -35,6 +35,7 @@ public class SearchByCategoryStrategy implements Strategy {
             //TODO Add rent method
             System.out.println("Insert id of product You want to rent");
             Optional<Product> productToRent = repository.getProductById(MyScanner.getInt());
+            System.out.println(productToRent);
 
             System.out.println("RENTING PRODUCT METHOD HERE");
         } else System.out.println("Returning to previous menu");
