@@ -27,8 +27,7 @@ public enum StrategyPicker {
 
     public static StrategyPicker getOptionFromScanner() {
         System.out.println("Input required:");
-        Scanner scanner = new Scanner(System.in);
-        int input = scanner.nextInt();
+        int input = MyScanner.getInt();
         Optional<StrategyPicker> strategyPicker = Optional.ofNullable(StrategyPicker.getTypeByOrdinal(input));
 
         if (strategyPicker.isEmpty()) {
