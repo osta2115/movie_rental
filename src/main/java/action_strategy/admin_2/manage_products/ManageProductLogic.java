@@ -13,8 +13,8 @@ public class ManageProductLogic {
 
     private void adminProductManagementScreen() {
         optionPane();
-        Context manageUsersContext = new ManageProductsContext();
-        Strategy strategy = manageUsersContext.operation(StrategyPicker.getOptionFromScanner());
+        Context manageProductsContextContext = new ManageProductsContext();
+        Strategy strategy = manageProductsContextContext.operation(StrategyPicker.getOptionFromScanner());
         strategy.algorithm();
     }
 

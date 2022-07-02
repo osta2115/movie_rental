@@ -11,7 +11,7 @@ public class LoginStrategy implements Strategy {
         System.out.println("Login method //not yet implemented//");
         // login passed
         boolean temporaryIsAdmin = true;
-        new AdminDefiningLogic().definePermission(temporaryIsAdmin);
+        AdminDefiningLogic.getInstance().definePermission(temporaryIsAdmin);
     }
 
 }
