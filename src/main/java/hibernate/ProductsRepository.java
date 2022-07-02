@@ -43,6 +43,8 @@ public interface ProductsRepository {
      */
     List<Product> getListOfProductWithGivenTitle(String title);
 
+    List<Product> getListOfProductWithGivenCarrier(String title);
+
     /**
      * Metoda do wyciągnięcia wszystkich produktów z bazy.
      *
@@ -166,4 +168,5 @@ public interface ProductsRepository {
     Optional<Branch> getBranch(Branch branch);
 
 
+    List<Product> getListOfProductWithGivenCategory(String title);
 }

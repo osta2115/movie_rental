@@ -38,5 +38,29 @@ public class MyScanner {
             return getInt();
         }
     }
+
+    public static boolean yesOrNo () {
+        scanner = new Scanner(System.in);
+        try {
+            Character result = scanner.nextLine().charAt(0);
+            if (result.equals('y') || result.equals('Y')){
+                return true;
+            } else if (result.equals('n') || result.equals('N')){
+                return false;
+            }else {
+                System.out.println("Wrong answer. Y/N expected. Try again: ");
+                return yesOrNo();
+            }
+        } catch (InputMismatchException e) {
+            System.out.println("Incorrect input type. Number expected. Try again: ");
+            return yesOrNo();
+        }
+    }
+
+    public static void pressAnyKeyToContiunue () {
+        System.out.print("\nPress any key to continue.");
+        scanner = new Scanner(System.in);
+        scanner.nextLine();
+    }
 }
 
