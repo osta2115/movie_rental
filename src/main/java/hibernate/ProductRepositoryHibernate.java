@@ -93,6 +93,15 @@ public class ProductRepositoryHibernate implements ProductsRepository {
     }
 
     @Override
+    public List<Product> getListOfProductWithGivenCarrier(String title) {
+
+        List<Product> list = getAllProducts();
+        return list.stream()
+                .filter(p -> p.getCarrier().getDescription().equalsIgnoreCase(title))
+                .toList();
+    }
+
+    @Override
     public List<Product> getAllProducts() {
 
         try {
@@ -465,5 +474,72 @@ public class ProductRepositoryHibernate implements ProductsRepository {
             log.info("No branch {} {} {} found", branch.getName(), branch.getAdres(), branch.getPostalCode());
             return Optional.empty();
         }
+    }
+
+    @Override
+    public List<Product> getListOfProductWithGivenCategory(String title) {
+        List<Product> list = getAllProducts();
+        return list.stream()
+                .filter(p -> p.getCategory().getTitle().equalsIgnoreCase(title))
+                .toList();
+    }
+
+    public List<Category> getListOfallCategories() {
+        List<Product> list = getAllProducts();
+        return list.stream()
+                .map(Product::getCategory)
+                .toList();
+    }
+
+    public List<Carrier> getListOfAllCarerTypes() {
+        List<Product> list = getAllProducts();
+        return list.stream()
+                .map(Product::getCarrier)
+                .toList();
+    }
+
+
+    public List<Director> getListOfAllDirectors() {
+        List<Product> list = getAllProducts();
+        return list.stream()
+                .map(Product::getDirector)
+                .toList();
+    }
+
+    public List<Product> getListOfProductWithGivenDirectorName(String name) {
+        List<Product> list = getAllProducts();
+        return list.stream()
+                .filter(p ->
+                        name.equalsIgnoreCase(
+                                p.getDirector().getFirstName() + " " + p.getDirector().getLastName()))
+                .toList();
+    }
+
+    public List<PegiCategory> getListOfAllPegiCategories() {
+        List<Product> list = getAllProducts();
+        return list.stream()
+                .map(Product::getPegiCategory)
+                .toList();
+    }
+
+    public List<Product> getListOfProductWithGivenPegiCategory(String title) {
+        List<Product> list = getAllProducts();
+        return list.stream()
+                .filter(p -> p.getPegiCategory().getTitle().equalsIgnoreCase(title))
+                .toList();
+    }
+
+    public List<Product> getListOfProductCreatedINGivenYear(String year) {
+        List<Product> list = getAllProducts();
+        return list.stream()
+                .filter(p -> year.equalsIgnoreCase(String.valueOf(p.getReleaseDate().getYear())))
+                .toList();
+    }
+
+    public List<Integer> GetListOfAllYears() {
+        List<Product> list = getAllProducts();
+        return list.stream()
+                .map(p -> p.getReleaseDate().getYear())
+                .toList();
     }
 }
