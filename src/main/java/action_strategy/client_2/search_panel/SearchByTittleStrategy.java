@@ -1,5 +1,6 @@
 package action_strategy.client_2.search_panel;
 
+import action_strategy.MyScanner;
 import action_strategy.Strategy;
 import action_strategy.StrategyCommons;
 import hibernate.ProductRepositoryHibernate;
@@ -16,9 +17,9 @@ public class SearchByTittleStrategy implements Strategy {
     public void algorithm() {
 
         System.out.println("Enter product name:");
-        String title = scanner.nextLine();
+        String title = MyScanner.getText();
 
-        ProductRepositoryHibernate repository = StrategyCommons.getInstance().getProductRepositoryHibernate();
+        ProductRepositoryHibernate repository = StrategyCommons.getProductRepositoryHibernate();
         List<Product> resultList = repository.getListOfProductWithGivenTitle(title);
         if (resultList.isEmpty()){
             System.out.println("No product with given title. \nReturning to previous menu");
@@ -26,7 +27,10 @@ public class SearchByTittleStrategy implements Strategy {
         }
         resultList.forEach(System.out::println);
         System.out.println("Do you want to rent this ?");
-
+        if (MyScanner.yesOrNo()){
+            //TODO Add rent method
+            System.out.println("RENTING PRODUCT METHOD HERE");
+        } else System.out.println("Returning to previous menu");
         new SearchPanelLogic().startAdminUserManagementPanel();
     }
 }
