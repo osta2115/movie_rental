@@ -2,6 +2,7 @@ package action_strategy.login_panel;
 
 import action_strategy.Context;
 import action_strategy.Strategy;
+import action_strategy.StrategyCommons;
 import action_strategy.StrategyPicker;
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,6 +18,7 @@ public class LoginLogic {
     }
 
     public void startLoginPanel() {
+        initializeDatabase();
         displayWelcomeMsg();
         LoginContextScreen();
     }
@@ -41,5 +43,9 @@ public class LoginLogic {
         System.out.println("2. Register");
         System.out.println("3. Exit movie rental");
         System.out.println("<------------------------------------------->");
+    }
+
+    private void initializeDatabase() {
+        StrategyCommons.getInstance().getProductRepositoryHibernate();
     }
 }
