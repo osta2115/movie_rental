@@ -92,6 +92,7 @@ public class ProductRepositoryHibernate implements ProductsRepository {
         return query.getResultList();
     }
 
+    @Override
     public List<Product> getListOfProductWithGivenCarrier(String title) {
 
         List<Product> list = getAllProducts();
@@ -474,4 +475,28 @@ public class ProductRepositoryHibernate implements ProductsRepository {
             return Optional.empty();
         }
     }
+
+    @Override
+    public List<Product> getListOfProductWithGivenCategory(String title) {
+        List<Product> list = getAllProducts();
+        return list.stream()
+                .filter(p -> p.getCategory().getTitle().equalsIgnoreCase(title))
+                .toList();
+    }
+
+    public List<Category> getListOfallCategories() {
+        List<Product> list = getAllProducts();
+        return list.stream()
+                .map(Product::getCategory)
+                .toList();
+    }
+
+    public List<Carrier> getListOfAllCarerTypes() {
+        List<Product> list = getAllProducts();
+        return list.stream()
+                .map(Product::getCarrier)
+                .toList();
+    }
+
+
 }

@@ -12,11 +12,16 @@ import java.util.Optional;
 public class SearchByCarrierTypeStrategy implements Strategy {
     @Override
     public void algorithm() {
+        ProductRepositoryHibernate repository = StrategyCommons.getProductRepositoryHibernate();
+        System.out.println("<------------------------------------------->");
+        System.out.println("<-- LIST OF AVAILABLE CARRIER TYPES--------->");
+        repository.getListOfAllCarerTypes().stream()
+                .distinct()
+                .forEach(c -> System.out.println(c.getDescription()));
 
         System.out.println("Enter carrier type:");
         String title = MyScanner.getText();
 
-        ProductRepositoryHibernate repository = StrategyCommons.getProductRepositoryHibernate();
         List<Product> resultList = repository.getListOfProductWithGivenCarrier(title);
 
         if (resultList.isEmpty()) {
