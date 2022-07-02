@@ -28,7 +28,7 @@ public class StrategyCommons {
         return INSTANCE;
     }
 
-    private Client loggedUser;
+    private static Client loggedUser;
     private static EntityManagerFactory entityManagerFactory;
     private static EntityManager entityManager;
     private static ProductRepositoryHibernate productRepositoryHibernate;
@@ -36,8 +36,8 @@ public class StrategyCommons {
     private static RentsRepositoryHibernate rentsRepositoryHibernate;
 
 
-    Client setLoggedClient(Client client) {
-        this.loggedUser = client;
+    public static Client setLoggedClient(Client client) {
+        loggedUser = client;
         return client;
     }
 

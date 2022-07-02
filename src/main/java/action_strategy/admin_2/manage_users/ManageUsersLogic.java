@@ -19,7 +19,7 @@ public class ManageUsersLogic {
 
     private void displayWelcomeMsg() {
         System.out.println("<------------------------------------------->");
-        System.out.println("-<--------- USER MANAGEMENT PANEL ---------->");
+        System.out.println("<---------- ADMIN MANAGEMENT PANEL --------->");
         System.out.println("<------------------------------------------->");
     }
 

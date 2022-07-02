@@ -1,5 +1,6 @@
 package hibernate;
 
+import action_strategy.StrategyCommons;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import tables.Client;
@@ -200,9 +201,7 @@ public class ClientsRepositoryHibernate implements ClientsRepository{
         }
     }
 
-    @Override
     public Client authorization(String login, String password) {
-
         try {
             entityManager.getTransaction().begin();
             String selectUserByLogin = "select c from Client c where c.login = :login";
