@@ -1,13 +1,12 @@
 package movie_rental_dev;
 
+import action_strategy.login_panel.LoginLogic;
 import hibernate.ProductRepositoryHibernate;
 import tables.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.time.LocalDate;
-import java.util.List;
 
 public class MovieRentalTestR {
 
@@ -17,11 +16,11 @@ public class MovieRentalTestR {
 
 
     public static void main(String[] args) {
-        entityManagerFactory = Persistence.createEntityManagerFactory("mysql-movie-rental-dev");
-        entityManager = entityManagerFactory.createEntityManager();
-        productRepositoryHibernate = new ProductRepositoryHibernate(entityManager);
+//        entityManagerFactory = Persistence.createEntityManagerFactory("mysql-movie-rental-dev");
+//        entityManager = entityManagerFactory.createEntityManager();
+//        productRepositoryHibernate = new ProductRepositoryHibernate(entityManager);
 
-        categoryChangeTest();
+//        categoryChangeTest();
 //        addProductTest();
 //        productRepositoryHibernate.getProductById(11).ifPresent(System.out::println);
 //        branchTest();
@@ -30,14 +29,18 @@ public class MovieRentalTestR {
 //        pegiCategoriesTest();
 //        carrierTest();
 
-
-
+        LoginLogic.getInstance().startLoginPanel();
+//        System.out.println(StrategyPicker.getOptionFromScanner());
+//        Scanner sc = new Scanner(System.in);
+//        while (true){
+//            System.out.println(StrategyPicker.getTypeByOrdinal(sc.nextInt()));
+//        }
 //        productRepositoryHibernate.removeCategory(Category.builder().title("Karykatura").build());
 //        productRepositoryHibernate.deleteProductById(11);
 //        productRepositoryHibernate.deleteProductById(43);
 //        productRepositoryHibernate.getProductById(11).ifPresent(System.out::println);
 
-        System.out.println("><><");
+//        System.out.println("><><");
 //        List<Product> allProducts = productRepositoryHibernate.getAllProducts();
 //        allProducts.forEach(System.out::println);
 
