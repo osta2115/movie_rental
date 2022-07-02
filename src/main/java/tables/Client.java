@@ -18,6 +18,7 @@ import java.util.List;
 public class Client {
 
     @Id
+    @GeneratedValue
     private Integer id;
 
     @Column(name = "first_name", length = 32)
@@ -38,7 +39,7 @@ public class Client {
     @Column(name = "address", length = 64)
     private String address;
 
-    @Column(name = "login", length = 64)
+    @Column(name = "login", length = 64, unique = true)
     private String login;
 
     @Column(name = "admin")

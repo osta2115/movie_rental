@@ -1,5 +1,6 @@
 package movie_rental;
 
+import action_strategy.login_panel.LoginLogic;
 import hibernate.ProductRepositoryHibernate;
 import tables.*;
 
@@ -10,18 +11,7 @@ import java.time.LocalDate;
 
 public class MovieRentalMain {
 
-    private static EntityManagerFactory entityManagerFactory;
-    private static EntityManager entityManager;
-    private static ProductRepositoryHibernate productRepositoryHibernate;
-
-
     public static void main(String[] args) {
-        entityManagerFactory = Persistence.createEntityManagerFactory("mysql-movie-rental");
-        entityManager = entityManagerFactory.createEntityManager();
-        productRepositoryHibernate = new ProductRepositoryHibernate(entityManager);
-
-
-        entityManager.close();
-        entityManagerFactory.close();
+        LoginLogic.getInstance().startLoginPanel();
     }
 }

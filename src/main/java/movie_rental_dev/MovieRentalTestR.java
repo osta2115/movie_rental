@@ -11,9 +11,9 @@ import java.time.LocalDate;
 
 public class MovieRentalTestR {
 
-//    private static EntityManagerFactory entityManagerFactory;
-//    private static EntityManager entityManager;
-//    private static ProductRepositoryHibernate productRepositoryHibernate;
+//    private static EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("mysql-movie-rental-dev");
+//    private static EntityManager entityManager = entityManagerFactory.createEntityManager();
+//    private static ProductRepositoryHibernate productRepositoryHibernate = new ProductRepositoryHibernate(entityManager);
 
 
     public static void main(String[] args) {
@@ -173,11 +173,12 @@ public class MovieRentalTestR {
 //    }
 //
 //    static Product buildProductWithName(String name) {
-//        Branch branch = new Branch();
-//        branch.setName("Gdzies");
-//        branch.setAdres("ulica");
-//        branch.setPostalCode("12-345");
+//        Branch branchTmp = new Branch();
+//        branchTmp.setName("Gdzies");
+//        branchTmp.setAdres("ulica");
+//        branchTmp.setPostalCode("12-345");
 //
+//        Branch branch = productRepositoryHibernate.addBranch(branchTmp);
 //        Carrier carrier = new Carrier();
 //        carrier.setDescription("taśma");
 //

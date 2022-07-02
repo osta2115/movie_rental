@@ -1,6 +1,9 @@
 package action_strategy;
 
+import hibernate.ClientsRepositoryHibernate;
 import hibernate.ProductRepositoryHibernate;
+import hibernate.RentsRepository;
+import hibernate.RentsRepositoryHibernate;
 import tables.Client;
 
 import javax.persistence.EntityManager;
@@ -17,6 +20,8 @@ public class StrategyCommons {
         entityManagerFactory = Persistence.createEntityManagerFactory("mysql-movie-rental-dev");
         entityManager = entityManagerFactory.createEntityManager();
         productRepositoryHibernate = new ProductRepositoryHibernate(entityManager);
+        clientsRepositoryHibernate = new ClientsRepositoryHibernate(entityManager);
+        rentsRepositoryHibernate = new RentsRepositoryHibernate(entityManager);
     }
 
     public static StrategyCommons getInstance() {
@@ -27,6 +32,8 @@ public class StrategyCommons {
     private static EntityManagerFactory entityManagerFactory;
     private static EntityManager entityManager;
     private static ProductRepositoryHibernate productRepositoryHibernate;
+    private static ClientsRepositoryHibernate clientsRepositoryHibernate;
+    private static RentsRepositoryHibernate rentsRepositoryHibernate;
 
 
     Client setLoggedClient(Client client) {
@@ -38,23 +45,31 @@ public class StrategyCommons {
         if (loggedUser == null) {
             System.out.println("no user logged to system");
             return null;
-        }
-        else  return loggedUser;
+        } else return loggedUser;
     }
 
-    boolean logoutUser () {
+    boolean logoutUser() {
         loggedUser = null;
         return loggedUser == null;
     }
 
-    public EntityManager getEntityManager(){
+    public EntityManager getEntityManager() {
         return entityManager;
     }
-    public  ProductRepositoryHibernate getProductRepositoryHibernate(){
+
+    public static ProductRepositoryHibernate getProductRepositoryHibernate() {
         return productRepositoryHibernate;
     }
 
-    public boolean doWeContinue (){
+    public static ClientsRepositoryHibernate getClientsRepositoryHibernate() {
+        return clientsRepositoryHibernate;
+    }
+
+    public static RentsRepositoryHibernate getRentsRepositoryHibernate() {
+        return rentsRepositoryHibernate;
+    }
+
+    public boolean doWeContinue() {
 
         return false;
     }

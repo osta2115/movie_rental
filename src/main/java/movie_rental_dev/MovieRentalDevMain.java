@@ -1,6 +1,8 @@
 package movie_rental_dev;
 
+import hibernate.ClientBasicInfo;
 import hibernate.ClientsRepositoryHibernate;
+import hibernate.ProductRepositoryHibernate;
 import hibernate.RentsRepositoryHibernate;
 import lombok.extern.slf4j.Slf4j;
 import tables.*;
@@ -18,18 +20,24 @@ public class MovieRentalDevMain {
     private static EntityManager entityManager;
     private static ClientsRepositoryHibernate clientsRepositoryHibernate;
     private static RentsRepositoryHibernate rentsRepositoryHibernate;
+    private static ProductRepositoryHibernate productRepositoryHibernate;
 
 
     public static void main(String[] args) throws SQLException {
         entityManagerFactory = Persistence.createEntityManagerFactory("mysql-movie-rental-dev");
         entityManager = entityManagerFactory.createEntityManager();
         clientsRepositoryHibernate = new ClientsRepositoryHibernate(entityManager);
+        productRepositoryHibernate = new ProductRepositoryHibernate(entityManager);
         rentsRepositoryHibernate = new RentsRepositoryHibernate(entityManager);
 
-        //testCreateRent();
-        //testIsProductAvailableAtGivenDate();
-        testFirstAvailableDate();
+//        testCreateNewClient();
+//        testCreateNewClient();
+//        testCreateNewClient();
+        testCreateRent();
+        testIsProductAvailableAtGivenDate();
+//        testFirstAvailableDate();
 
+        System.out.println("test");
         entityManager.close();
         entityManagerFactory.close();
 
@@ -40,7 +48,7 @@ public class MovieRentalDevMain {
     }
 
     private static void testIsProductAvailableAtGivenDate() throws SQLException {
-        rentsRepositoryHibernate.isProductAvailableAtGivenDate(23, LocalDate.of(2022, 06, 12));
+        rentsRepositoryHibernate.isProductAvailableAtGivenDate(10, LocalDate.of(2022, 10, 12));
     }
 
     private static void testIsProductAvailableNow() throws SQLException {
@@ -48,26 +56,28 @@ public class MovieRentalDevMain {
     }
 
     private static void testCreateRent() throws SQLException {
-        Client client = new Client();
-        client.setId(1);
-        client.setFirstName("Jan");
-        client.setLastName("Kowalski");
-        client.setPhoneNumber("669420511");
-        client.setEmail("jan.kowalski@gmail.com");
-        client.setPostalCode("20-420");
-        client.setAddress("Krakowskie Przedmieście 5/24");
-        client.setLogin("jankow56");
-        client.setPassword("1234");
-        client.setAdmin(1);
 
-        Product product = MovieRentalTestR.buildProductWithName("Jakiś film");
+        Client client = clientsRepositoryHibernate.getClientById(1).get();
+//        Client client = new Client();
+//        client.setFirstName(clientBasicInfo.getFirstName());
+//        client.setLastName(clientBasicInfo.getLastName());
+//        client.setPhoneNumber("669420511");
+//        client.setEmail("jan.kowalski@gmail.com");
+//        client.setPostalCode("20-420");
+//        client.setAddress("Krakowskie Przedmieście 5/24");
+//        client.setLogin(clientBasicInfo.getLogin());
+//        client.setLogin(clientBasicInfo.getLogin());
+//        client.setPassword("1234");
+//        client.setAdmin(1);
+
+        Product product = buildProductWithName("Straszny film");
 
         Rent rent = new Rent();
         //rent.setId(0);
         rent.setClient(client);
         rent.setProduct(product);
-        rent.setRentDate(LocalDate.of(2022,5,23));
-        rent.setReturnDate(LocalDate.of(2022,7,11));
+        rent.setRentDate(LocalDate.of(2022, 5, 23));
+        rent.setReturnDate(LocalDate.of(2022, 7, 11));
 
         rentsRepositoryHibernate.createRent(rent);
     }
@@ -93,9 +103,8 @@ public class MovieRentalDevMain {
         clientsRepositoryHibernate.deleteClientById(1);
     }
 
-    private static void testCreateNewClient() throws SQLException {
+    private static void testCreateNewClient() {
         Client client = new Client();
-        client.setId(1);
         client.setFirstName("Jan");
         client.setLastName("Kowalski");
         client.setPhoneNumber("669420511");
@@ -106,5 +115,42 @@ public class MovieRentalDevMain {
         client.setPassword("1234");
         client.setAdmin(1);
         clientsRepositoryHibernate.createClient(client);
+    }
+
+    static Product buildProductWithName(String name) {
+        Branch branchTmp = new Branch();
+        branchTmp.setName("Gdzies");
+        branchTmp.setAdres("ulica");
+        branchTmp.setPostalCode("12-345");
+        Branch branch = productRepositoryHibernate.addBranch(branchTmp);
+
+        Carrier tmpCarrier = new Carrier();
+        tmpCarrier.setDescription("taśma");
+        Carrier carrier = productRepositoryHibernate.addCarrier(tmpCarrier);
+
+        Category tmpCategory = new Category();
+        tmpCategory.setTitle("DRAMAT");
+        Category category = productRepositoryHibernate.addCategory(tmpCategory);
+
+
+        PegiCategory tmpPegi = new PegiCategory();
+        tmpPegi.setTitle("+18");
+        PegiCategory pegiCategory = productRepositoryHibernate.addPegiCategory(tmpPegi);
+
+        Director tmpDir = new Director();
+        tmpDir.setFirstName("Jan");
+        tmpDir.setLastName("Janowski");
+        Director director = productRepositoryHibernate.addDirector(tmpDir);
+
+
+        Product product = new Product();
+        product.setPegiCategory(pegiCategory);
+        product.setCategory(category);
+        product.setDirector(director);
+        product.setCarrier(carrier);
+        product.setBranch(branch);
+        product.setTitle(name);
+        product.setReleaseDate(LocalDate.of(1996, 12, 13));
+        return product;
     }
 }

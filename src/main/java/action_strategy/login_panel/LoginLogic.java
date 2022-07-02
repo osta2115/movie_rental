@@ -46,6 +46,8 @@ public class LoginLogic {
     }
 
     private void initializeDatabase() {
-        StrategyCommons.getInstance().getProductRepositoryHibernate();
+        StrategyCommons.getProductRepositoryHibernate();
+        StrategyCommons.getClientsRepositoryHibernate();
+        StrategyCommons.getProductRepositoryHibernate();
     }
 }
