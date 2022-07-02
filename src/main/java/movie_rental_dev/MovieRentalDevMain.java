@@ -1,20 +1,15 @@
 package movie_rental_dev;
 
-import hibernate.ClientBasicInfo;
 import hibernate.ClientsRepositoryHibernate;
+import hibernate.RentsRepositoryHibernate;
 import lombok.extern.slf4j.Slf4j;
-import tables.Client;
-import tables.Product;
-import tables.Rent;
+import tables.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 public class MovieRentalDevMain {
@@ -22,18 +17,59 @@ public class MovieRentalDevMain {
     private static EntityManagerFactory entityManagerFactory;
     private static EntityManager entityManager;
     private static ClientsRepositoryHibernate clientsRepositoryHibernate;
+    private static RentsRepositoryHibernate rentsRepositoryHibernate;
 
 
     public static void main(String[] args) throws SQLException {
         entityManagerFactory = Persistence.createEntityManagerFactory("mysql-movie-rental-dev");
         entityManager = entityManagerFactory.createEntityManager();
         clientsRepositoryHibernate = new ClientsRepositoryHibernate(entityManager);
+        rentsRepositoryHibernate = new RentsRepositoryHibernate(entityManager);
 
-        testAuthorization();
+        //testCreateRent();
+        //testIsProductAvailableAtGivenDate();
+        testFirstAvailableDate();
 
         entityManager.close();
         entityManagerFactory.close();
 
+    }
+
+    private static void testFirstAvailableDate() throws SQLException {
+        rentsRepositoryHibernate.firstAvailableDate(29);
+    }
+
+    private static void testIsProductAvailableAtGivenDate() throws SQLException {
+        rentsRepositoryHibernate.isProductAvailableAtGivenDate(23, LocalDate.of(2022, 06, 12));
+    }
+
+    private static void testIsProductAvailableNow() throws SQLException {
+        rentsRepositoryHibernate.isProductAvailableNow(29);
+    }
+
+    private static void testCreateRent() throws SQLException {
+        Client client = new Client();
+        client.setId(1);
+        client.setFirstName("Jan");
+        client.setLastName("Kowalski");
+        client.setPhoneNumber("669420511");
+        client.setEmail("jan.kowalski@gmail.com");
+        client.setPostalCode("20-420");
+        client.setAddress("Krakowskie Przedmieście 5/24");
+        client.setLogin("jankow56");
+        client.setPassword("1234");
+        client.setAdmin(1);
+
+        Product product = MovieRentalTestR.buildProductWithName("Jakiś film");
+
+        Rent rent = new Rent();
+        //rent.setId(0);
+        rent.setClient(client);
+        rent.setProduct(product);
+        rent.setRentDate(LocalDate.of(2022,5,23));
+        rent.setReturnDate(LocalDate.of(2022,7,11));
+
+        rentsRepositoryHibernate.createRent(rent);
     }
 
     private static void testAuthorization() throws SQLException {
@@ -60,7 +96,7 @@ public class MovieRentalDevMain {
     private static void testCreateNewClient() throws SQLException {
         Client client = new Client();
         client.setId(1);
-        client.setFirstName("Jank");
+        client.setFirstName("Jan");
         client.setLastName("Kowalski");
         client.setPhoneNumber("669420511");
         client.setEmail("jan.kowalski@gmail.com");

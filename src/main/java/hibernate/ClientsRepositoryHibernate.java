@@ -163,34 +163,42 @@ public class ClientsRepositoryHibernate implements ClientsRepository{
 
     @Override
     public void giveAdmin(Integer id) throws SQLException {
-        entityManager.getTransaction().begin();
-        String selectUserToGiveAdmin = "select c from Client c where c.id = :id";
-        var query = entityManager.createQuery(selectUserToGiveAdmin, Client.class);
-        query.setParameter("id", id);
-        Client client = query.getSingleResult();
-        if (client.getAdmin() == 0) {
-            client.setAdmin(1);
-        } else {
-            log.warn("User with id: {} is already an admin", id);
+        try {
+            entityManager.getTransaction().begin();
+            String selectUserToGiveAdmin = "select c from Client c where c.id = :id";
+            var query = entityManager.createQuery(selectUserToGiveAdmin, Client.class);
+            query.setParameter("id", id);
+            Client client = query.getSingleResult();
+            if (client.getAdmin() == 0) {
+                client.setAdmin(1);
+            } else {
+                log.warn("User with id: {} is already an admin", id);
+            }
+            entityManager.getTransaction().commit();
+        } catch (NoResultException e) {
+            log.warn("Cannot give admin permissions to non-existing user. User id: {}", id);
         }
-        entityManager.getTransaction().commit();
     }
 
     @Override
     public Client authorization(String login, String password) throws SQLException {
 
-        entityManager.getTransaction().begin();
-        String selectUserByLogin = "select c from Client c where c.login = :login";
-        var query = entityManager.createQuery(selectUserByLogin, Client.class);
-        query.setParameter("login", login);
-        Client client = query.getSingleResult();
-        if (client.getPassword().equals(password)){
-            log.info("User {} logged in", login);
-            return client;
-        } else {
-            log.warn("Wrong login or password");
+        try {
+            entityManager.getTransaction().begin();
+            String selectUserByLogin = "select c from Client c where c.login = :login";
+            var query = entityManager.createQuery(selectUserByLogin, Client.class);
+            query.setParameter("login", login);
+            Client client = query.getSingleResult();
+            if (client.getPassword().equals(password)){
+                log.info("User {} logged in", login);
+                return client;
+            } else {
+                log.warn("Wrong login or password");
+            }
+            entityManager.getTransaction().commit();
+        } catch (NoResultException e) {
+            log.warn("Cannot check authorization for non-existing user");
         }
-        entityManager.getTransaction().commit();
         return null;
     }
 }
