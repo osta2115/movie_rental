@@ -92,6 +92,14 @@ public class ProductRepositoryHibernate implements ProductsRepository {
         return query.getResultList();
     }
 
+    public List<Product> getListOfProductWithGivenCarrier(String title) {
+
+        List<Product> list = getAllProducts();
+        return list.stream()
+                .filter(p -> p.getCarrier().getDescription().equalsIgnoreCase(title))
+                .toList();
+    }
+
     @Override
     public List<Product> getAllProducts() {
 

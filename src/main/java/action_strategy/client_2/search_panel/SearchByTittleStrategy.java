@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import tables.Product;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 @Slf4j
@@ -23,14 +24,19 @@ public class SearchByTittleStrategy implements Strategy {
         List<Product> resultList = repository.getListOfProductWithGivenTitle(title);
         if (resultList.isEmpty()){
             System.out.println("No product with given title. \nReturning to previous menu");
+            MyScanner.pressAnyKeyToContiunue();
             new SearchPanelLogic().startAdminUserManagementPanel();
         }
         resultList.forEach(System.out::println);
         System.out.println("Do you want to rent this ?");
         if (MyScanner.yesOrNo()){
             //TODO Add rent method
+            System.out.println("Insert id of product You want to rent");
+            Optional<Product> productToRent = repository.getProductById(MyScanner.getInt());
+
             System.out.println("RENTING PRODUCT METHOD HERE");
         } else System.out.println("Returning to previous menu");
+        MyScanner.pressAnyKeyToContiunue();
         new SearchPanelLogic().startAdminUserManagementPanel();
     }
 }

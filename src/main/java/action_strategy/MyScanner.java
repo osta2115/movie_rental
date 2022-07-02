@@ -56,5 +56,11 @@ public class MyScanner {
             return yesOrNo();
         }
     }
+
+    public static void pressAnyKeyToContiunue () {
+        System.out.print("\nPress any key to continue.");
+        scanner = new Scanner(System.in);
+        scanner.nextLine();
+    }
 }
 

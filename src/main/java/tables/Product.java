@@ -73,4 +73,17 @@ public class Product {
 
     @Column (name = "release_date")
     private LocalDate releaseDate;
+
+    @Override
+    public String toString() {
+        return "Product " +
+                "id = " + id +
+                " title= '" + title + '\'' +
+                ", releaseDate = " + releaseDate +
+                ", category = " + category.getTitle() +
+                ", director = " + director.getFirstName() + " " +director.getLastName() +
+                ", pegiCategory = " + pegiCategory.getTitle() +
+                ", carrier = " + carrier.getDescription() +
+                ", available in = " + branch.getName();
+    }
 }
