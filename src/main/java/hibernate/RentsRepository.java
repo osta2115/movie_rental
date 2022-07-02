@@ -3,21 +3,20 @@ package hibernate;
 import tables.Product;
 import tables.Rent;
 
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
 public interface RentsRepository {
 
-    void createRent(Rent rent) throws SQLException;
+    void createRent(Rent rent);
 
-    List<Rent> getAllRents() throws SQLException;
+    List<Rent> getAllRents();
 
-    List<Rent> getAllProductRents(Product product) throws SQLException;
+    List<Rent> getAllProductRents(Product product);
 
-    boolean isProductAvailableNow(Integer id) throws SQLException;;
+    boolean isProductAvailableNow(Integer id);
 
-    boolean isProductAvailableAtGivenDate(Integer id, LocalDate date) throws SQLException;;
+    boolean isProductAvailableAtGivenDate(Integer id, LocalDate date);
 
-    LocalDate firstAvailableDate(Integer id) throws SQLException;;
+    LocalDate firstAvailableDate(Integer id);
 }
