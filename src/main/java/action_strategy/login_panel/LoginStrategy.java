@@ -10,7 +10,7 @@ public class LoginStrategy implements Strategy {
         // TODO login method
         System.out.println("Login method //not yet implemented//");
         // login passed
-        boolean temporaryIsAdmin = true;
+        boolean temporaryIsAdmin = false;
         AdminDefiningLogic.getInstance().definePermission(temporaryIsAdmin);
     }
 

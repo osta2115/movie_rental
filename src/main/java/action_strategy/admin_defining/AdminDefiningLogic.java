@@ -3,7 +3,6 @@ package action_strategy.admin_defining;
 import action_strategy.Context;
 import action_strategy.Strategy;
 import action_strategy.StrategyPicker;
-import action_strategy.login_panel.LoginLogic;
 
 public class AdminDefiningLogic {
     private static final AdminDefiningLogic INSTANCE = new AdminDefiningLogic();
