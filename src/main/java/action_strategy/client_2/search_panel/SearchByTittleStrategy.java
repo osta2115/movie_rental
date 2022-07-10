@@ -24,7 +24,7 @@ public class SearchByTittleStrategy implements Strategy {
         List<Product> resultList = repository.getListOfProductWithGivenTitle(title);
         if (resultList.isEmpty()){
             System.out.println("No product with given title. \nReturning to previous menu");
-            MyScanner.pressAnyKeyToContiunue();
+            MyScanner.pressAnyKeyToContinue();
             new SearchPanelLogic().startAdminUserManagementPanel();
         }
         resultList.forEach(System.out::println);
@@ -36,7 +36,7 @@ public class SearchByTittleStrategy implements Strategy {
 
             System.out.println("RENTING PRODUCT METHOD HERE");
         } else System.out.println("Returning to previous menu");
-        MyScanner.pressAnyKeyToContiunue();
+        MyScanner.pressAnyKeyToContinue();
         new SearchPanelLogic().startAdminUserManagementPanel();
     }
 }

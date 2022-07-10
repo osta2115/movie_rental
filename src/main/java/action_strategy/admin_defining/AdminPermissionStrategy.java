@@ -6,7 +6,7 @@ import action_strategy.admin_panel.AdminPanelLogic;
 public class AdminPermissionStrategy implements Strategy {
     @Override
     public void algorithm() {
-        System.out.println("starting panel");
+        System.out.println("Starting Admin panel");
         AdminPanelLogic.getInstance().startAdminPanel();
     }
 }

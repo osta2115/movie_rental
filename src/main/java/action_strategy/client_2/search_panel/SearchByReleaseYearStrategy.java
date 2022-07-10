@@ -26,7 +26,7 @@ public class SearchByReleaseYearStrategy implements Strategy {
 
         if (resultList.isEmpty()) {
             System.out.println("No product created in given year. \nReturning to previous menu");
-            MyScanner.pressAnyKeyToContiunue();
+            MyScanner.pressAnyKeyToContinue();
             new SearchPanelLogic().startAdminUserManagementPanel();
         }
         resultList.forEach(System.out::println);
@@ -39,7 +39,7 @@ public class SearchByReleaseYearStrategy implements Strategy {
 
             System.out.println("RENTING PRODUCT METHOD HERE");
         } else System.out.println("Returning to previous menu");
-        MyScanner.pressAnyKeyToContiunue();
+        MyScanner.pressAnyKeyToContinue();
         new SearchPanelLogic().startAdminUserManagementPanel();
     }
 

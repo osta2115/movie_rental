@@ -21,13 +21,15 @@ public class LoginStrategy implements Strategy {
         System.out.println("Enter password:");
         String password = MyScanner.getText();
 
+
         Client client = StrategyCommons.getClientsRepositoryHibernate().authorization(login, password);
-
-        StrategyCommons.setLoggedClient(client);
-
-        boolean isAdmin = client.getAdmin() == 1;
-
-        AdminDefiningLogic.getInstance().definePermission(isAdmin);
+        if (!(client == null)){
+            StrategyCommons.setLoggedClient(client);
+            boolean isAdmin = client.getAdmin() == 1;
+            AdminDefiningLogic.getInstance().definePermission(isAdmin);
+        } else {
+            System.out.println("Wrong login or password");
+        }
     }
 
     private void displayLoginPanel() {

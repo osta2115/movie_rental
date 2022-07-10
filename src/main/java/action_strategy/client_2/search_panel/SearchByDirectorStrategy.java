@@ -27,7 +27,7 @@ public class SearchByDirectorStrategy implements Strategy {
         if (resultList.isEmpty()) {
             System.out.println("No product directed by " + name +
                     "\nReturning to previous menu");
-            MyScanner.pressAnyKeyToContiunue();
+            MyScanner.pressAnyKeyToContinue();
             new SearchPanelLogic().startAdminUserManagementPanel();
         }
         resultList.forEach(System.out::println);
@@ -40,7 +40,7 @@ public class SearchByDirectorStrategy implements Strategy {
 
             System.out.println("RENTING PRODUCT METHOD HERE");
         } else System.out.println("Returning to previous menu");
-        MyScanner.pressAnyKeyToContiunue();
+        MyScanner.pressAnyKeyToContinue();
         new SearchPanelLogic().startAdminUserManagementPanel();
     }
 }

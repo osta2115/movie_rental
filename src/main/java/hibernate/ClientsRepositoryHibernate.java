@@ -57,8 +57,8 @@ public class ClientsRepositoryHibernate implements ClientsRepository{
             entityManager.getTransaction().begin();
             entityManager.persist(client);
             entityManager.getTransaction().commit();
-        } catch (Exception e) {
-            log.warn("User already exist: {}", client);
+        } catch (Exception e){
+
         }
     }
 
@@ -69,7 +69,7 @@ public class ClientsRepositoryHibernate implements ClientsRepository{
             String selectClientToRemove = "select c from Client c where c.id = :id";
             var query = entityManager.createQuery(selectClientToRemove, Client.class);
             query.setParameter("id", id);
-            Client client = (Client) query.getSingleResult();
+            Client client = query.getSingleResult();
             entityManager.remove(client);
             entityManager.getTransaction().commit();
         } catch (NoResultException e) {
@@ -84,7 +84,7 @@ public class ClientsRepositoryHibernate implements ClientsRepository{
             String selectClientToChangeFirstName = "select c from Client c where c.id = :id";
             var query = entityManager.createQuery(selectClientToChangeFirstName, Client.class);
             query.setParameter("id", id);
-            Client client = (Client) query.getSingleResult();
+            Client client = query.getSingleResult();
             client.setFirstName(newName);
             entityManager.getTransaction().commit();
         } catch (NoResultException e) {
@@ -99,7 +99,7 @@ public class ClientsRepositoryHibernate implements ClientsRepository{
             String selectClientToChangeFirstName = "select c from Client c where c.id = :id";
             var query = entityManager.createQuery(selectClientToChangeFirstName, Client.class);
             query.setParameter("id", id);
-            Client client = (Client) query.getSingleResult();
+            Client client = query.getSingleResult();
             client.setLastName(newLastName);
             entityManager.getTransaction().commit();
         } catch (NoResultException e) {
@@ -114,7 +114,7 @@ public class ClientsRepositoryHibernate implements ClientsRepository{
             String selectClientToChangeFirstName = "select c from Client c where c.id = :id";
             var query = entityManager.createQuery(selectClientToChangeFirstName, Client.class);
             query.setParameter("id", id);
-            Client client = (Client) query.getSingleResult();
+            Client client = query.getSingleResult();
             client.setPhoneNumber(newPhoneNumber);
             entityManager.getTransaction().commit();
         } catch (NoResultException e) {
@@ -129,7 +129,7 @@ public class ClientsRepositoryHibernate implements ClientsRepository{
             String selectClientToChangeFirstName = "select c from Client c where c.id = :id";
             var query = entityManager.createQuery(selectClientToChangeFirstName, Client.class);
             query.setParameter("id", id);
-            Client client = (Client) query.getSingleResult();
+            Client client = query.getSingleResult();
             client.setEmail(newEmail);
             entityManager.getTransaction().commit();
         } catch (NoResultException e) {
@@ -144,7 +144,7 @@ public class ClientsRepositoryHibernate implements ClientsRepository{
             String selectClientToChangeFirstName = "select c from Client c where c.id = :id";
             var query = entityManager.createQuery(selectClientToChangeFirstName, Client.class);
             query.setParameter("id", id);
-            Client client = (Client) query.getSingleResult();
+            Client client = query.getSingleResult();
             client.setPostalCode(newPostalCode);
             entityManager.getTransaction().commit();
         } catch (NoResultException e) {
@@ -159,7 +159,7 @@ public class ClientsRepositoryHibernate implements ClientsRepository{
             String selectClientToChangeFirstName = "select c from Client c where c.id = :id";
             var query = entityManager.createQuery(selectClientToChangeFirstName, Client.class);
             query.setParameter("id", id);
-            Client client = (Client) query.getSingleResult();
+            Client client = query.getSingleResult();
             client.setAddress(newAddress);
             entityManager.getTransaction().commit();
         } catch (NoResultException e) {
@@ -174,7 +174,7 @@ public class ClientsRepositoryHibernate implements ClientsRepository{
             String selectClientToChangeFirstName = "select c from Client c where c.id = :id";
             var query = entityManager.createQuery(selectClientToChangeFirstName, Client.class);
             query.setParameter("id", id);
-            Client client = (Client) query.getSingleResult();
+            Client client = query.getSingleResult();
             client.setPassword(newPassword);
             entityManager.getTransaction().commit();
         } catch (NoResultException e) {
@@ -210,6 +210,7 @@ public class ClientsRepositoryHibernate implements ClientsRepository{
             Client client = query.getSingleResult();
             if (client.getPassword().equals(password)){
                 log.info("User {} logged in", login);
+                entityManager.getTransaction().commit();
                 return client;
             } else {
                 log.warn("Wrong login or password");

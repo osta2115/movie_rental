@@ -1,6 +1,5 @@
 package tables;
 
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,7 +17,7 @@ import java.util.List;
 public class Client {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
     @Column(name = "first_name", length = 32)
@@ -51,24 +50,24 @@ public class Client {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "client")
     private List<Rent> rents;
 
-    boolean isPhoneNumberCorrect(String phoneNumber) {
+    public static boolean isPhoneNumberCorrect(String phoneNumber) {
         return phoneNumber.matches("[0-9]{9}");
     }
 
-    boolean isEmailCorrect(String email) {
-        return email.matches("[a-zA-Z0-9._]+\\@[a-zA-Z]+(\\.[a-zA-Z]+)*");
+    public static boolean isEmailCorrect(String email) {
+        return email.matches("[a-zA-Z0-9._]+\\@[a-zA-Z]+(\\.[a-zA-Z]+)+");
     }
 
-    boolean isLoginCorrect(String login) {
+    public static boolean isLoginCorrect(String login) {
         return login.isEmpty();
     }
 
-    boolean isPasswordCorrect(String password) {
-        return password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\\[*.!@$%^&\\(\\)\\{\\}\\[\\]:;<>,.?/~_+-=|\\]).{8,64}");
+    public static boolean isPasswordCorrect(String password) {
+        return password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$");
     }
 
-    boolean idPostalCodeCorrect(String postalCode) {
-        return postalCode.matches("[0-9]{2}-{1}[0-9]{3}");
+    public static boolean isPostalCodeCorrect(String postalCode) {
+        return postalCode.matches("[0-9]{2}-[0-9]{3}");
     }
 
 }

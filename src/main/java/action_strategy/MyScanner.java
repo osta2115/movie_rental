@@ -1,7 +1,5 @@
 package action_strategy;
 
-import action_strategy.login_panel.LoginLogic;
-
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -52,12 +50,12 @@ public class MyScanner {
                 return yesOrNo();
             }
         } catch (InputMismatchException e) {
-            System.out.println("Incorrect input type. Number expected. Try again: ");
+            System.out.println("Incorrect input type. Y or N expected. Try again: ");
             return yesOrNo();
         }
     }
 
-    public static void pressAnyKeyToContiunue () {
+    public static void pressAnyKeyToContinue() {
         System.out.print("\nPress any key to continue.");
         scanner = new Scanner(System.in);
         scanner.nextLine();
